@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Guilt - AI Ethics Community Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+        .hero-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            border-bottom: 1px solid #333;
+            text-align: center;
+        }
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #007bff, #00bfff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+        .feature-card {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        .cta-section {
+            background-color: #1a1a1a;
+            padding: 80px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .btn-primary {
+            background: linear-gradient(45deg, #007bff, #00bfff);
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+        .stats-section {
+            padding: 50px 0;
+            background-color: #1a1a1a;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            color: #888;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="/">AI Guilt</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about.html">About</a>
+                        </li>
+                        <li class="nav-item" v-if="!isLoggedIn">
+                            <a class="nav-link" href="/login.html">Login</a>
+                        </li>
+                        <li class="nav-item" v-if="!isLoggedIn">
+                            <a class="nav-link" href="/signup.html">Sign Up</a>
+                        </li>
+                        <li class="nav-item" v-if="isLoggedIn">
+                            <a class="nav-link" href="/profile.html">Profile</a>
+                        </li>
+                        <li class="nav-item" v-if="isLoggedIn">
+                            <a class="nav-link" href="#" @click.prevent="handleLogout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">Shape the Future of AI Ethics</h1>
+                <p class="hero-subtitle">Join a community dedicated to responsible AI development and ethical considerations</p>
+                <a href="/signup.html" class="btn btn-primary btn-lg">Join the Community</a>
+            </div>
+        </section>
+
+        <section class="container my-5">
+            <div class="row">
+                <div class="col-lg-4" v-for="feature in features">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i :class="feature.icon"></i>
+                        </div>
+                        <h3>{{ feature.title }}</h3>
+                        <p>{{ feature.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4" v-for="stat in stats">
+                        <div class="stat-card">
+                            <div class="stat-number">{{ stat.number }}</div>
+                            <div class="stat-label">{{ stat.label }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h2 class="mb-4">Ready to Make a Difference?</h2>
+                <p class="mb-4">Join our community of AI ethicists, developers, and thought leaders.</p>
+                <a href="/signup.html" class="btn btn-primary">Get Started Today</a>
+            </div>
+        </section>
+    </div>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+                    features: [
+                        {
+                            icon: 'fas fa-comments',
+                            title: 'Community Discussion',
+                            description: 'Engage in meaningful discussions about AI ethics, share experiences, and learn from peers.'
+                        },
+                        {
+                            icon: 'fas fa-lightbulb',
+                            title: 'Knowledge Sharing',
+                            description: 'Access resources, case studies, and best practices for ethical AI development.'
+                        },
+                        {
+                            icon: 'fas fa-users',
+                            title: 'Collaborative Solutions',
+                            description: 'Work together to develop frameworks and guidelines for responsible AI implementation.'
+                        }
+                    ],
+                    stats: [
+                        {
+                            number: '1,000+',
+                            label: 'Community Members'
+                        },
+                        {
+                            number: '500+',
+                            label: 'Discussion Topics'
+                        },
+                        {
+                            number: '50+',
+                            label: 'Expert Contributors'
+                        }
+                    ]
+                }
+            },
+            methods: {
+                async handleLogout() {
+                    try {
+                        const response = await fetch('/api/auth/logout', {
+                            method: 'POST',
+                            credentials: 'include'
+                        });
+
+                        if (response.ok) {
+                            localStorage.removeItem('user');
+                            localStorage.removeItem('isLoggedIn');
+                            this.isLoggedIn = false;
+                            window.location.href = '/';
+                        }
+                    } catch (error) {
+                        console.error('Logout failed:', error);
+                    }
+                }
+            },
+            mounted() {
+                // Check authentication state
+                this.isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

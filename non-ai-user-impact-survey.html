@@ -1,0 +1,221 @@
+<html><head><base href="https://aiguilt.com/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Survey on Non-AI Usage | AI Guilt</title>
+<meta name="description" content="Participate in our comprehensive survey about not using AI technologies. Share your experiences and contribute to our research on the impact of AI avoidance.">
+<meta name="keywords" content="non-AI usage survey, artificial intelligence ethics, AI avoidance, technology survey">
+<link rel="canonical" href="https://aiguilt.com/survey">
+<meta property="og:title" content="Survey on Non-AI Usage | AI Guilt">
+<meta property="og:description" content="Take part in our in-depth survey about not using AI technologies. Your responses will help us understand the implications of avoiding AI in various aspects of life.">
+<meta property="og:url" content="https://aiguilt.com/survey">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Survey on Non-AI Usage | AI Guilt">
+<meta name="twitter:description" content="Participate in our survey on not using AI technologies. Your insights will contribute to our research on the implications of AI avoidance.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.js"></script>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #000000;
+        color: #ffffff;
+    }
+    .navbar {
+        background-color: #1a1a1a;
+        border-bottom: 1px solid #333;
+    }
+    .navbar-brand, .nav-link {
+        color: #ffffff !important;
+    }
+    .main-content {
+        min-height: calc(100vh - 56px - 100px);
+        padding: 40px 0;
+    }
+    .survey-card {
+        background-color: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .btn-primary {
+        background-color: #4267B2;
+        border-color: #4267B2;
+    }
+    .btn-primary:hover {
+        background-color: #365899;
+        border-color: #365899;
+    }
+    .footer {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        padding: 20px 0;
+        border-top: 1px solid #333;
+    }
+    .form-check-input:checked {
+        background-color: #4267B2;
+        border-color: #4267B2;
+    }
+    .form-check-label {
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div id="app">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">AI Guilt</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <h1 class="text-center mb-4">Survey on Non-AI Usage and Impact</h1>
+            <p class="text-center mb-4">Your responses will help us understand the implications and personal experiences related to not using AI technologies. All responses are anonymous and will be used for research purposes only.</p>
+            <form @submit.prevent="submitSurvey">
+                <div v-for="(question, index) in questions" :key="index" class="survey-card">
+                    <h5>{{ question.text }}</h5>
+                    <div v-for="(option, optionIndex) in question.options" :key="optionIndex" class="form-check">
+                        <input class="form-check-input" type="radio" :name="'question' + index" :id="'question' + index + 'option' + optionIndex" :value="option" v-model="question.answer" required>
+                        <label class="form-check-label" :for="'question' + index + 'option' + optionIndex">
+                            {{ option }}
+                        </label>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Submit Survey</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Contact Us</h5>
+                    <p>Email: <a href="mailto:info@aiguilt.com" class="text-white">info@aiguilt.com</a></p>
+                    <p>Phone: <a href="tel:5624448463" class="text-white">562-444-8463</a></p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about" class="text-white">About Us</a></li>
+                        <li><a href="/terms" class="text-white">Terms of Service</a></li>
+                        <li><a href="/privacy" class="text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+const app = Vue.createApp({
+    data() {
+        return {
+            questions: [
+                {
+                    text: "How aware are you of AI technologies in everyday life?",
+                    options: ["Not aware at all", "Slightly aware", "Moderately aware", "Very aware", "Extremely aware"],
+                    answer: null
+                },
+                {
+                    text: "How do you feel about not using AI-powered technologies?",
+                    options: ["Very relieved", "Somewhat relieved", "Neutral", "Slightly concerned", "Very concerned"],
+                    answer: null
+                },
+                {
+                    text: "Do you feel your productivity is affected by not using AI tools?",
+                    options: ["My productivity is much higher without AI", "My productivity is slightly higher without AI", "No effect on my productivity", "My productivity might be slightly lower without AI", "My productivity is significantly lower without AI"],
+                    answer: null
+                },
+                {
+                    text: "How do you perceive your job security compared to AI users?",
+                    options: ["Much more secure", "Slightly more secure", "No difference", "Slightly less secure", "Much less secure"],
+                    answer: null
+                },
+                {
+                    text: "Do you feel pressure from others to start using AI technologies?",
+                    options: ["No pressure at all", "Slight pressure", "Moderate pressure", "Significant pressure", "Extreme pressure"],
+                    answer: null
+                },
+                {
+                    text: "How do you feel about your decision-making process without AI assistance?",
+                    options: ["Very confident", "Somewhat confident", "Neutral", "Slightly unsure", "Very unsure"],
+                    answer: null
+                },
+                {
+                    text: "How do you perceive the quality of your work compared to those using AI tools?",
+                    options: ["My work quality is much higher", "My work quality is slightly higher", "No difference in work quality", "My work quality might be slightly lower", "My work quality is significantly lower"],
+                    answer: null
+                },
+                {
+                    text: "How has not using AI impacted your creativity?",
+                    options: ["My creativity has significantly increased", "My creativity has slightly increased", "No impact on my creativity", "My creativity might have slightly decreased", "My creativity has significantly decreased"],
+                    answer: null
+                },
+                {
+                    text: "Do you feel left behind in technological advancements?",
+                    options: ["Not at all", "Rarely", "Sometimes", "Often", "Always"],
+                    answer: null
+                },
+                {
+                    text: "How has not using AI affected your personal relationships?",
+                    options: ["Very positively", "Somewhat positively", "No effect", "Somewhat negatively", "Very negatively"],
+                    answer: null
+                },
+                {
+                    text: "Do you feel your learning and skill development are impacted by not using AI?",
+                    options: ["My learning has significantly improved", "My learning has slightly improved", "No impact on my learning", "My learning might be slightly hindered", "My learning is significantly hindered"],
+                    answer: null
+                },
+                {
+                    text: "How do you feel about your privacy and data security compared to AI users?",
+                    options: ["Much more secure", "Slightly more secure", "No difference", "Slightly less secure", "Much less secure"],
+                    answer: null
+                },
+                {
+                    text: "Do you worry about falling behind in your career by not using AI?",
+                    options: ["Not at all", "Rarely", "Sometimes", "Often", "Always"],
+                    answer: null
+                },
+                {
+                    text: "How do you perceive your problem-solving skills without AI assistance?",
+                    options: ["My skills are much stronger", "My skills are slightly stronger", "No difference in my skills", "My skills might be slightly weaker", "My skills are significantly weaker"],
+                    answer: null
+                },
+                {
+                    text: "Overall, do you believe not using AI has had a positive or negative impact on your life?",
+                    options: ["Very positive impact", "Somewhat positive impact", "Neutral impact", "Somewhat negative impact", "Very negative impact"],
+                    answer: null
+                }
+            ]
+        }
+    },
+    methods: {
+        submitSurvey() {
+            const allAnswered = this.questions.every(question => question.answer !== null);
+            
+            if (allAnswered) {
+                console.log('Survey submitted:', this.questions);
+                alert('Thank you for completing the survey! Your responses have been recorded.');
+                this.questions.forEach(question => question.answer = null);
+            } else {
+                alert('Please answer all questions before submitting.');
+            }
+        }
+    }
+}).mount('#app');
+</script>
+</body></html>

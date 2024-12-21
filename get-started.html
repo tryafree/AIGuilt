@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started - AI Guilt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+        .hero-section {
+            padding: 40px 0;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            border-bottom: 1px solid #333;
+        }
+        .feature-card {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+        .join-form {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #333;
+        }
+        .form-control {
+            background-color: #252525;
+            border: 1px solid #333;
+            color: #ffffff;
+            padding: 12px;
+        }
+        .form-control:focus {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+        .btn-join {
+            background: linear-gradient(45deg, #007bff, #00bfff);
+            border: none;
+            padding: 12px 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-join:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+        .testimonial {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #333;
+        }
+        .quote {
+            font-style: italic;
+            color: #ddd;
+            margin-bottom: 10px;
+        }
+        .author {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .feed-section {
+            margin-top: 40px;
+        }
+        .card.bg-dark.text-white {
+            background-color: #1a1a1a !important;
+            border: 1px solid #333;
+        }
+        .card.bg-dark.text-white .card-body {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="/">AI Guilt</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login.php">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <section class="hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-12 text-center mb-4">
+                        <h1 class="display-4 mb-3">Join the AI Ethics Discussion</h1>
+                        <p class="lead mb-3">Connect with others experiencing AI-related ethical concerns. Share experiences, find support, and contribute to meaningful discussions.</p>
+                        <button class="btn btn-join btn-lg mb-4" @click="scrollToForm">Get Started Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="feed-section container mt-4">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card bg-dark text-white mb-4" v-for="post in posts" :key="post.id">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.content }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Posted by {{ post.author }}</small>
+                                <div>
+                                    <button class="btn btn-outline-primary btn-sm me-2">
+                                        <i class="bi bi-heart"></i> {{ post.likes }}
+                                    </button>
+                                    <button class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-chat"></i> {{ post.comments }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="feature-cards">
+                        <div class="row">
+                            <div class="col-12 mb-3" v-for="feature in features" :key="feature.title">
+                                <div class="feature-card">
+                                    <div class="feature-icon">{{ feature.icon }}</div>
+                                    <h3>{{ feature.title }}</h3>
+                                    <p>{{ feature.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container my-5">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h2 class="mb-4">What Our Members Say</h2>
+                    <div v-for="testimonial in testimonials" :key="testimonial.author" class="testimonial">
+                        <p class="quote">{{ testimonial.quote }}</p>
+                        <p class="author">{{ testimonial.author }}</p>
+                        <p class="text-muted">{{ testimonial.role }}</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="join-form" id="joinForm">
+                        <h2 class="mb-4">Create Your Account</h2>
+                        <form @submit.prevent="handleSubmit">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" v-model="form.username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" v-model="form.email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password" v-model="form.password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="confirmPassword" v-model="form.confirmPassword" required>
+                            </div>
+                            <button type="submit" class="btn btn-join w-100">Join AI Guilt Community</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    form: {
+                        username: '',
+                        email: '',
+                        password: '',
+                        confirmPassword: ''
+                    },
+                    features: [
+                        {
+                            icon: '💭',
+                            title: 'Share Experiences',
+                            description: 'Connect with others facing similar AI ethical dilemmas and share your journey.'
+                        },
+                        {
+                            icon: '🎧',
+                            title: 'Expert Insights',
+                            description: 'Access exclusive podcasts featuring AI ethics experts and practitioners.'
+                        },
+                        {
+                            icon: '🤝',
+                            title: 'Community Support',
+                            description: 'Get support from a community that understands your AI-related concerns.'
+                        },
+                        {
+                            icon: '📚',
+                            title: 'Resource Library',
+                            description: 'Access curated resources on AI ethics, guidelines, and best practices.'
+                        }
+                    ],
+                    testimonials: [
+                        {
+                            quote: 'Finding this community helped me navigate the complex emotions of integrating AI into my creative process.',
+                            author: 'Sarah Chen',
+                            role: 'Digital Artist'
+                        },
+                        {
+                            quote: 'The discussions here have been invaluable in shaping my approach to ethical AI implementation.',
+                            author: 'Dr. James Wilson',
+                            role: 'AI Researcher'
+                        }
+                    ],
+                    posts: [
+                        {
+                            id: 1,
+                            title: 'Navigating AI in Creative Work',
+                            content: 'As an artist, I\'ve been struggling with the role of AI in my creative process. Today I had a breakthrough in understanding how to maintain authenticity while leveraging AI tools.',
+                            author: 'Sarah Chen',
+                            likes: 45,
+                            comments: 12
+                        },
+                        {
+                            id: 2,
+                            title: 'Ethics in AI Development',
+                            content: 'Just finished implementing ethical guidelines in our AI project. The community\'s insights here were invaluable in shaping our approach.',
+                            author: 'Dr. James Wilson',
+                            likes: 38,
+                            comments: 15
+                        },
+                        {
+                            id: 3,
+                            title: 'Finding Balance with AI Tools',
+                            content: 'Started a discussion group at work about ethical AI use. Amazing to see how many others share similar concerns and experiences.',
+                            author: 'Michael Rodriguez',
+                            likes: 29,
+                            comments: 8
+                        }
+                    ]
+                }
+            },
+            methods: {
+                handleSubmit() {
+                    if (this.form.password !== this.form.confirmPassword) {
+                        alert('Passwords do not match');
+                        return;
+                    }
+                    // Here you would typically make an API call to register the user
+                    console.log('Form submitted:', this.form);
+                    // Redirect to success page or show success message
+                },
+                scrollToForm() {
+                    document.getElementById('joinForm').scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

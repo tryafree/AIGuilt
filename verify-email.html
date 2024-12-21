@@ -1,0 +1,27 @@
+<div class="main-content">
+    <div class="container">
+        <div class="landing-section">
+            <h2>Verify Your Email</h2>
+            <form id="verificationForm">
+                <div class="mb-3">
+                    <label for="verificationCode" class="form-label">Enter Verification Code</label>
+                    <input type="text" class="form-control" id="verificationCode" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Verify</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('verificationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Here you would typically verify the code with your server
+    // For this example, we'll simulate successful verification
+    alert('Email verified successfully! You can now log in.');
+    
+    // Redirect to a login page (you'll need to create this)
+    window.location.href = '/login.html';
+});
+</script>

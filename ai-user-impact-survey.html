@@ -1,0 +1,224 @@
+<html><head><base href="https://aiguilt.com/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Guilt Survey | AI Guilt</title>
+<meta name="description" content="Participate in our comprehensive survey about AI guilt, usage, and impact. Share your experiences and contribute to our research on the ethical implications of AI.">
+<meta name="keywords" content="AI guilt survey, artificial intelligence ethics, AI impact, technology survey">
+<link rel="canonical" href="https://aiguilt.com/survey">
+<meta property="og:title" content="AI Guilt Survey | AI Guilt">
+<meta property="og:description" content="Take part in our in-depth survey about AI guilt, usage, and impact. Your responses will help us understand the ethical implications of AI in various aspects of life.">
+<meta property="og:url" content="https://aiguilt.com/survey">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Guilt Survey | AI Guilt">
+<meta name="twitter:description" content="Participate in our AI guilt survey. Your insights will contribute to our research on the ethical implications of AI technologies.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.js"></script>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #000000;
+        color: #ffffff;
+    }
+    .navbar {
+        background-color: #1a1a1a;
+        border-bottom: 1px solid #333;
+    }
+    .navbar-brand, .nav-link {
+        color: #ffffff !important;
+    }
+    .main-content {
+        min-height: calc(100vh - 56px - 100px);
+        padding: 40px 0;
+    }
+    .survey-card {
+        background-color: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .btn-primary {
+        background-color: #4267B2;
+        border-color: #4267B2;
+    }
+    .btn-primary:hover {
+        background-color: #365899;
+        border-color: #365899;
+    }
+    .footer {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        padding: 20px 0;
+        border-top: 1px solid #333;
+    }
+    .form-check-input:checked {
+        background-color: #4267B2;
+        border-color: #4267B2;
+    }
+    .form-check-label {
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div id="app">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">AI Guilt</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <h1 class="text-center mb-4">AI Guilt and Impact Survey</h1>
+            <p class="text-center mb-4">Your responses will help us understand the ethical implications and personal experiences related to AI technologies. All responses are anonymous and will be used for research purposes only.</p>
+            <form @submit.prevent="submitSurvey">
+                <div v-for="(question, index) in questions" :key="index" class="survey-card">
+                    <h5>{{ question.text }}</h5>
+                    <div v-for="(option, optionIndex) in question.options" :key="optionIndex" class="form-check">
+                        <input class="form-check-input" type="radio" :name="'question' + index" :id="'question' + index + 'option' + optionIndex" :value="option" v-model="question.answer" required>
+                        <label class="form-check-label" :for="'question' + index + 'option' + optionIndex">
+                            {{ option }}
+                        </label>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-lg">Submit Survey</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Contact Us</h5>
+                    <p>Email: <a href="mailto:info@aiguilt.com" class="text-white">info@aiguilt.com</a></p>
+                    <p>Phone: <a href="tel:5624448463" class="text-white">562-444-8463</a></p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about" class="text-white">About Us</a></li>
+                        <li><a href="/terms" class="text-white">Terms of Service</a></li>
+                        <li><a href="/privacy" class="text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+const app = Vue.createApp({
+    data() {
+        return {
+            questions: [
+                {
+                    text: "How often do you interact with AI-powered technologies in your daily life?",
+                    options: ["Never", "Rarely (1-2 times a week)", "Occasionally (3-4 times a week)", "Frequently (daily)", "Constantly (multiple times a day)"],
+                    answer: null
+                },
+                {
+                    text: "How would you describe your overall feelings towards AI technologies?",
+                    options: ["Very negative", "Somewhat negative", "Neutral", "Somewhat positive", "Very positive"],
+                    answer: null
+                },
+                {
+                    text: "Do you feel that AI technologies have improved your productivity?",
+                    options: ["Not at all", "Slightly", "Moderately", "Significantly", "Extremely"],
+                    answer: null
+                },
+                {
+                    text: "How concerned are you about AI potentially replacing human jobs?",
+                    options: ["Not concerned at all", "Slightly concerned", "Moderately concerned", "Very concerned", "Extremely concerned"],
+                    answer: null
+                },
+                {
+                    text: "Do you feel guilty when using AI tools to complete tasks?",
+                    options: ["Never", "Rarely", "Sometimes", "Often", "Always"],
+                    answer: null
+                },
+                {
+                    text: "How has AI affected your decision-making process?",
+                    options: ["It has made decision-making much harder", "It has slightly complicated decision-making", "It has had no effect on my decision-making", "It has slightly improved my decision-making", "It has greatly improved my decision-making"],
+                    answer: null
+                },
+                {
+                    text: "Do you trust AI-generated content or recommendations?",
+                    options: ["Not at all", "Rarely", "Sometimes", "Often", "Always"],
+                    answer: null
+                },
+                {
+                    text: "How has AI impacted your creativity?",
+                    options: ["It has significantly decreased my creativity", "It has slightly decreased my creativity", "It has had no impact on my creativity", "It has slightly enhanced my creativity", "It has significantly enhanced my creativity"],
+                    answer: null
+                },
+                {
+                    text: "Do you feel overwhelmed by the rapid advancements in AI technology?",
+                    options: ["Not at all overwhelmed", "Slightly overwhelmed", "Moderately overwhelmed", "Very overwhelmed", "Extremely overwhelmed"],
+                    answer: null
+                },
+                {
+                    text: "How has AI affected your personal relationships?",
+                    options: ["Very negatively", "Somewhat negatively", "No effect", "Somewhat positively", "Very positively"],
+                    answer: null
+                },
+                {
+                    text: "Do you feel pressure to use AI tools to keep up with others?",
+                    options: ["No pressure at all", "Slight pressure", "Moderate pressure", "Significant pressure", "Extreme pressure"],
+                    answer: null
+                },
+                {
+                    text: "How has AI impacted your learning and skill development?",
+                    options: ["It has significantly hindered my learning", "It has slightly hindered my learning", "It has had no impact on my learning", "It has slightly enhanced my learning", "It has significantly enhanced my learning"],
+                    answer: null
+                },
+                {
+                    text: "Do you worry about becoming too dependent on AI technologies?",
+                    options: ["Not at all", "Rarely", "Sometimes", "Often", "Always"],
+                    answer: null
+                },
+                {
+                    text: "How has AI affected your sense of privacy and data security?",
+                    options: ["I feel much less secure", "I feel slightly less secure", "It has had no effect on my sense of security", "I feel slightly more secure", "I feel much more secure"],
+                    answer: null
+                },
+                {
+                    text: "Overall, do you believe AI has had a positive or negative impact on your life?",
+                    options: ["Very negative impact", "Somewhat negative impact", "Neutral impact", "Somewhat positive impact", "Very positive impact"],
+                    answer: null
+                }
+            ]
+        }
+    },
+    methods: {
+        submitSurvey() {
+            // Check if all questions are answered
+            const allAnswered = this.questions.every(question => question.answer !== null);
+            
+            if (allAnswered) {
+                // Here you would typically send the data to your server
+                console.log('Survey submitted:', this.questions);
+                alert('Thank you for completing the survey! Your responses have been recorded.');
+                // Reset the form
+                this.questions.forEach(question => question.answer = null);
+            } else {
+                alert('Please answer all questions before submitting.');
+            }
+        }
+    }
+}).mount('#app');
+</script>
+</body></html>

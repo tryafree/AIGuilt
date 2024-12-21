@@ -1,0 +1,245 @@
+<html><head><base href="https://aiguilt.com/resources">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Guilt Resources - Articles, Research, and Support | AI Guilt</title>
+<meta name="description" content="Explore a comprehensive collection of resources on AI guilt, including academic papers, ethical guidelines, and support networks for professionals dealing with AI-related ethical dilemmas.">
+<meta name="keywords" content="AI guilt resources, artificial intelligence ethics, AI research papers, ethical AI guidelines, professional support networks">
+<link rel="canonical" href="https://aiguilt.com/resources">
+<meta property="og:title" content="AI Guilt Resources - Articles, Research, and Support | AI Guilt">
+<meta property="og:description" content="Access a wealth of information on AI guilt, from cutting-edge research to practical coping strategies. Find the resources you need to navigate the complex landscape of AI ethics.">
+<meta property="og:url" content="https://aiguilt.com/resources">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Guilt Resources - Articles, Research, and Support | AI Guilt">
+<meta name="twitter:description" content="Discover essential resources on AI guilt, including academic research, ethical guidelines, and support networks for professionals grappling with AI-related moral dilemmas.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.js"></script>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #000000;
+        color: #ffffff;
+    }
+    .navbar {
+        background-color: #1a1a1a;
+        border-bottom: 1px solid #333;
+    }
+    .navbar-brand, .nav-link {
+        color: #ffffff !important;
+    }
+    .resource-card {
+        background-color: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+    .resource-card:hover {
+        transform: translateY(-5px);
+    }
+    .resource-card img {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        height: 200px;
+        object-fit: cover;
+    }
+    .btn-primary {
+        background-color: #4267B2;
+        border-color: #4267B2;
+    }
+    .btn-primary:hover {
+        background-color: #365899;
+        border-color: #365899;
+    }
+    .footer {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        padding: 20px 0;
+        border-top: 1px solid #333;
+    }
+    .section-title {
+        border-bottom: 2px solid #4267B2;
+        padding-bottom: 10px;
+        margin-bottom: 30px;
+    }
+</style>
+</head>
+<body>
+<div id="app">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">AI Guilt</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/resources">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">AI Guilt Resources</h1>
+        
+        <section class="mb-5">
+            <h2 class="section-title">Research Papers</h2>
+            <div class="row">
+                <div v-for="paper in researchPapers" :key="paper.id" class="col-md-4 mb-4">
+                    <div class="card resource-card h-100">
+                        <img :src="paper.image" class="card-img-top" :alt="paper.title">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ paper.title }}</h5>
+                            <p class="card-text">{{ paper.description }}</p>
+                            <a :href="paper.link" class="btn btn-primary" target="_blank">Read Paper</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="section-title">Ethical Guidelines</h2>
+            <div class="row">
+                <div v-for="guideline in ethicalGuidelines" :key="guideline.id" class="col-md-4 mb-4">
+                    <div class="card resource-card h-100">
+                        <img :src="guideline.image" class="card-img-top" :alt="guideline.title">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ guideline.title }}</h5>
+                            <p class="card-text">{{ guideline.description }}</p>
+                            <a :href="guideline.link" class="btn btn-primary" target="_blank">View Guidelines</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-5">
+            <h2 class="section-title">Support Networks</h2>
+            <div class="row">
+                <div v-for="network in supportNetworks" :key="network.id" class="col-md-4 mb-4">
+                    <div class="card resource-card h-100">
+                        <img :src="network.image" class="card-img-top" :alt="network.title">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ network.title }}</h5>
+                            <p class="card-text">{{ network.description }}</p>
+                            <a :href="network.link" class="btn btn-primary" target="_blank">Join Network</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Contact Us</h5>
+                    <p>Email: <a href="mailto:info@aiguilt.com" class="text-white">info@aiguilt.com</a></p>
+                    <p>Phone: <a href="tel:5624448463" class="text-white">562-444-8463</a></p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about" class="text-white">About Us</a></li>
+                        <li><a href="/terms" class="text-white">Terms of Service</a></li>
+                        <li><a href="/privacy" class="text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+const app = Vue.createApp({
+    data() {
+        return {
+            researchPapers: [
+                {
+                    id: 1,
+                    title: "The Impact of Threats to Professional Identity on Guilt in the Use of AI Tools",
+                    description: "TREO paper presented at ECIS 2024 exploring the relationship between professional identity and AI guilt.",
+                    image: "https://aiguilt.com/images/professional-identity-research.svg",
+                    link: "https://airesearch.com/professional-identity-guilt"
+                },
+                {
+                    id: 2,
+                    title: "AI-Induced Cognitive Dissonance in Creative Professionals",
+                    description: "Study on the psychological effects of AI tools on artists and writers.",
+                    image: "https://aiguilt.com/images/cognitive-dissonance-ai.svg",
+                    link: "https://psycnet.apa.org/ai-cognitive-dissonance"
+                },
+                {
+                    id: 3,
+                    title: "Ethical Implications of AI in Medical Diagnosis",
+                    description: "Research on the moral dilemmas faced by healthcare professionals using AI-assisted diagnostics.",
+                    image: "https://aiguilt.com/images/ai-medical-ethics.svg",
+                    link: "https://www.thelancet.com/ai-medical-ethics"
+                }
+            ],
+            ethicalGuidelines: [
+                {
+                    id: 1,
+                    title: "IEEE Ethically Aligned Design",
+                    description: "A vision for prioritizing human well-being with autonomous and intelligent systems.",
+                    image: "https://aiguilt.com/images/ieee-ethics.svg",
+                    link: "https://standards.ieee.org/industry-connections/ec/autonomous-systems/"
+                },
+                {
+                    id: 2,
+                    title: "AI Ethics Guidelines for Businesses",
+                    description: "Practical framework for implementing ethical AI practices in corporate environments.",
+                    image: "https://aiguilt.com/images/business-ai-ethics.svg",
+                    link: "https://www.weforum.org/ai-ethics-guidelines"
+                },
+                {
+                    id: 3,
+                    title: "UNESCO Recommendation on the Ethics of AI",
+                    description: "Global standard-setting instrument for the ethical development and use of AI.",
+                    image: "https://aiguilt.com/images/unesco-ai-ethics.svg",
+                    link: "https://en.unesco.org/artificial-intelligence/ethics"
+                }
+            ],
+            supportNetworks: [
+                {
+                    id: 1,
+                    title: "AI Ethics Professionals Network",
+                    description: "A community for professionals navigating ethical challenges in AI development and implementation.",
+                    image: "https://aiguilt.com/images/ai-ethics-network.svg",
+                    link: "https://aiethicsnetwork.org"
+                },
+                {
+                    id: 2,
+                    title: "Creative AI Support Group",
+                    description: "Forum for artists and writers to discuss the impact of AI on their creative processes.",
+                    image: "https://aiguilt.com/images/creative-ai-support.svg",
+                    link: "https://creativeaisupport.com"
+                },
+                {
+                    id: 3,
+                    title: "AI in Healthcare Ethics Forum",
+                    description: "Platform for healthcare professionals to address ethical concerns in AI-assisted medical practices.",
+                    image: "https://aiguilt.com/images/healthcare-ai-ethics.svg",
+                    link: "https://aihealthethics.org"
+                }
+            ]
+        }
+    }
+}).mount('#app');
+</script>
+</body></html>

@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | AI Guilt</title>
+    <meta name="description" content="Update your AI Guilt member profile, customize your preferences, and manage your personal information.">
+    <meta name="keywords" content="AI Guilt, edit profile, member settings, artificial intelligence ethics">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+        .main-content {
+            min-height: calc(100vh - 56px - 100px);
+            padding: 40px 0;
+        }
+        .edit-profile-section {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+        }
+        h1, h2, h3 {
+            color: #4267B2;
+        }
+        .btn-primary {
+            background-color: #4267B2;
+            border-color: #4267B2;
+        }
+        .btn-primary:hover {
+            background-color: #365899;
+            border-color: #365899;
+        }
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #4267B2;
+        }
+        .form-control, .form-select {
+            background-color: #2a2a2a;
+            border-color: #333;
+            color: #ffffff;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #2a2a2a;
+            border-color: #4267B2;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.25rem rgba(66, 103, 178, 0.25);
+        }
+        .form-label {
+            color: #cccccc;
+        }
+        .alert {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            background-color: rgba(25, 135, 84, 0.2);
+            border: 1px solid #198754;
+            color: #75b798;
+        }
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.2);
+            border: 1px solid #dc3545;
+            color: #ea868f;
+        }
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <!-- Loading State -->
+        <div v-if="loading" class="position-fixed w-100 h-100 d-flex justify-content-center align-items-center" style="background: rgba(0,0,0,0.8); z-index: 1000;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="/">AI Guilt</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/resources">Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contact">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" @click="logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <div class="container">
+                <div class="edit-profile-section">
+                    <h2 class="mb-4">Edit Your Profile</h2>
+                    
+                    <!-- Alert Messages -->
+                    <div v-if="successMessage" class="alert alert-success" role="alert">
+                        {{ successMessage }}
+                    </div>
+                    <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                        {{ errorMessage }}
+                    </div>
+
+                    <form @submit.prevent="saveProfile">
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4">
+                                <img :src="profileImagePreview || userProfile.photoURL || 'https://via.placeholder.com/150'" 
+                                     alt="Profile Picture" 
+                                     class="profile-picture mb-3">
+                                <div class="mb-3">
+                                    <label class="form-label">Change Profile Picture</label>
+                                    <input type="file" 
+                                           class="form-control" 
+                                           accept="image/*"
+                                           @change="handleImageChange"
+                                           ref="fileInput">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Display Name</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           v-model="userProfile.displayName"
+                                           required
+                                           minlength="3"
+                                           maxlength="50">
+                                    <small class="text-muted">3-50 characters</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Job Title</label>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           v-model="userProfile.jobTitle"
+                                           maxlength="100">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Bio</label>
+                                    <textarea class="form-control" 
+                                              v-model="userProfile.bio"
+                                              rows="4"
+                                              maxlength="500"
+                                              placeholder="Tell us about yourself..."></textarea>
+                                    <small class="text-muted">{{ 500 - (userProfile.bio?.length || 0) }} characters remaining</small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Areas of Interest</label>
+                                    <select class="form-select" 
+                                            v-model="userProfile.interests" 
+                                            multiple>
+                                        <option v-for="interest in availableInterests" 
+                                                :key="interest"
+                                                :value="interest">{{ interest }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Social Media Links</label>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-2">
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fab fa-linkedin"></i></span>
+                                                <input type="url" 
+                                                       class="form-control" 
+                                                       v-model="userProfile.socialLinks.linkedin"
+                                                       placeholder="LinkedIn Profile URL">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fab fa-twitter"></i></span>
+                                                <input type="url" 
+                                                       class="form-control" 
+                                                       v-model="userProfile.socialLinks.twitter"
+                                                       placeholder="Twitter Profile URL">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <div class="input-group">
+                                                <span class="input-group-text"><i class="fab fa-github"></i></span>
+                                                <input type="url" 
+                                                       class="form-control" 
+                                                       v-model="userProfile.socialLinks.github"
+                                                       placeholder="GitHub Profile URL">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Skills & Expertise</label>
+                                    <div class="input-group mb-2">
+                                        <input type="text" 
+                                               class="form-control" 
+                                               v-model="newSkill" 
+                                               @keyup.enter="addSkill"
+                                               placeholder="Add a skill (press Enter)">
+                                        <button class="btn btn-primary" @click="addSkill">Add</button>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span v-for="(skill, index) in userProfile.skills" 
+                                              :key="skill" 
+                                              class="badge bg-secondary d-flex align-items-center">
+                                            {{ skill }}
+                                            <button @click="removeSkill(index)" 
+                                                    class="btn btn-sm btn-close ms-2"></button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Theme Preference</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <select class="form-select" v-model="userProfile.themePreference">
+                                                <option value="dark">Dark Theme</option>
+                                                <option value="light">Light Theme</option>
+                                                <option value="system">System Default</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Advanced Privacy Controls</label>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               v-model="userProfile.privacySettings.hideEmail"
+                                               id="hideEmail">
+                                        <label class="form-check-label" for="hideEmail">
+                                            Hide Email Address
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               v-model="userProfile.privacySettings.profileVisibility"
+                                               id="profileVisibility">
+                                        <label class="form-check-label" for="profileVisibility">
+                                            Make Profile Private
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               v-model="userProfile.privacySettings.dataSharing"
+                                               id="dataSharing">
+                                        <label class="form-check-label" for="dataSharing">
+                                            Opt-out of Data Sharing
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Privacy Settings</label>
+                                    <div class="card bg-dark border-secondary">
+                                        <div class="card-body">
+                                            <div class="mb-2">
+                                                <label class="form-label">Profile Visibility</label>
+                                                <select class="form-select" v-model="userProfile.privacySettings.profileVisibility">
+                                                    <option value="public">Public</option>
+                                                    <option value="private">Private</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="form-label">Email Visibility</label>
+                                                <select class="form-select" v-model="userProfile.privacySettings.emailVisibility">
+                                                    <option value="public">Public</option>
+                                                    <option value="private">Private</option>
+                                                </select>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label class="form-label">Activity History</label>
+                                                <select class="form-select" v-model="userProfile.privacySettings.activityVisibility">
+                                                    <option value="public">Public</option>
+                                                    <option value="friends">Friends Only</option>
+                                                    <option value="private">Private</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Notification Preferences</label>
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               v-model="userProfile.notifications.email">
+                                        <label class="form-check-label">
+                                            Receive email notifications
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" 
+                                               type="checkbox" 
+                                               v-model="userProfile.notifications.newsletter">
+                                        <label class="form-check-label">
+                                            Subscribe to AI Guilt newsletter
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" 
+                                        class="btn btn-primary" 
+                                        :disabled="saving">
+                                    <span v-if="saving" class="spinner-border spinner-border-sm me-2"></span>
+                                    {{ saving ? 'Saving Changes...' : 'Save Changes' }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="/about" class="text-white">About Us</a></li>
+                            <li><a href="/terms" class="text-white">Terms of Service</a></li>
+                            <li><a href="/privacy" class="text-white">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Stay Updated</h5>
+                        <p>Join our mailing list for updates on AI guilt insights and community activities.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.js"></script>
+    
+    <script type="module">
+        import { 
+            auth, 
+            db,
+            storage,
+            doc,
+            getDoc,
+            updateDoc,
+            ref as storageRef,
+            uploadBytes,
+            getDownloadURL
+        } from './public/js/firebase-config.js';
+        import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    user: null,
+                    userProfile: {
+                        displayName: '',
+                        jobTitle: '',
+                        bio: '',
+                        photoURL: '',
+                        interests: [],
+                        skills: [],
+                        socialLinks: {
+                            linkedin: '',
+                            twitter: '',
+                            github: ''
+                        },
+                        themePreference: 'dark',
+                        privacySettings: {
+                            profileVisibility: 'public',
+                            emailVisibility: 'private',
+                            activityVisibility: 'public',
+                            hideEmail: false,
+                            dataSharing: false
+                        },
+                        notifications: {
+                            email: true,
+                            newsletter: true
+                        }
+                    },
+                    availableInterests: [
+                        'AI Ethics',
+                        'Professional Identity',
+                        'Machine Learning',
+                        'Natural Language Processing',
+                        'Robotics',
+                        'Human-AI Interaction',
+                        'AI Safety',
+                        'AI Policy',
+                        'AI Education',
+                        'AI Research'
+                    ],
+                    loading: true,
+                    saving: false,
+                    successMessage: '',
+                    errorMessage: '',
+                    profileImagePreview: null,
+                    selectedFile: null,
+                    newSkill: ''
+                }
+            },
+            methods: {
+                async loadUserProfile() {
+                    if (!this.user) return;
+                    
+                    try {
+                        const userDocRef = doc(db, 'users', this.user.uid);
+                        const userDoc = await getDoc(userDocRef);
+                        
+                        if (userDoc.exists()) {
+                            this.userProfile = {
+                                ...this.userProfile,
+                                ...userDoc.data()
+                            };
+                        }
+                    } catch (error) {
+                        console.error('Error loading profile:', error);
+                        this.errorMessage = 'Failed to load profile data';
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+                handleImageChange(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+                    
+                    if (!file.type.startsWith('image/')) {
+                        this.errorMessage = 'Please select an image file';
+                        return;
+                    }
+                    
+                    this.selectedFile = file;
+                    const reader = new FileReader();
+                    reader.onload = e => this.profileImagePreview = e.target.result;
+                    reader.readAsDataURL(file);
+                },
+                async uploadProfilePicture() {
+                    if (!this.selectedFile) return this.userProfile.photoURL;
+
+                    try {
+                        const fileExt = this.selectedFile.name.split('.').pop();
+                        const fileName = `profile_pictures/${this.user.uid}_${Date.now()}.${fileExt}`;
+                        const imageRef = storageRef(storage, fileName);
+                        
+                        await uploadBytes(imageRef, this.selectedFile);
+                        const photoURL = await getDownloadURL(imageRef);
+                        
+                        return photoURL;
+                    } catch (error) {
+                        console.error('Error uploading profile picture:', error);
+                        throw new Error('Failed to upload profile picture');
+                    }
+                },
+                async saveProfile() {
+                    if (!this.user) return;
+                    
+                    this.saving = true;
+                    this.errorMessage = '';
+                    this.successMessage = '';
+                    
+                    try {
+                        let photoURL = this.userProfile.photoURL;
+                        
+                        if (this.selectedFile) {
+                            photoURL = await this.uploadProfilePicture();
+                        }
+                        
+                        const userDocRef = doc(db, 'users', this.user.uid);
+                        await updateDoc(userDocRef, {
+                            ...this.userProfile,
+                            photoURL,
+                            updatedAt: new Date().toISOString()
+                        });
+                        
+                        this.successMessage = 'Profile updated successfully';
+                        this.selectedFile = null;
+                        this.profileImagePreview = null;
+                    } catch (error) {
+                        console.error('Error saving profile:', error);
+                        this.errorMessage = 'Failed to save profile changes';
+                    } finally {
+                        this.saving = false;
+                    }
+                },
+                async logout() {
+                    try {
+                        await signOut(auth);
+                        window.location.href = 'index.html';
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                        this.errorMessage = 'Failed to log out';
+                    }
+                },
+                addSkill() {
+                    if (!this.newSkill) return;
+                    
+                    this.userProfile.skills.push(this.newSkill);
+                    this.newSkill = '';
+                },
+                removeSkill(index) {
+                    this.userProfile.skills.splice(index, 1);
+                }
+            },
+            mounted() {
+                onAuthStateChanged(auth, (user) => {
+                    this.user = user;
+                    if (user) {
+                        this.loadUserProfile();
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                });
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

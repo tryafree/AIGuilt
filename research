@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="https://aiguilt.com/research">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Guilt Research - AI User Impact Survey | AI Guilt</title>
+    <meta name="description" content="Learn about AI Guilt's ongoing research, including our AI User Impact Survey exploring the effects of AI on daily life, work, creativity, relationships, and personal well-being.">
+    <meta name="keywords" content="AI guilt, research, user impact survey, artificial intelligence ethics">
+    <link rel="canonical" href="https://aiguilt.com/research">
+    <meta property="og:title" content="AI Guilt Research - AI User Impact Survey | AI Guilt">
+    <meta property="og:description" content="Explore AI Guilt's research on the impact of AI, including our comprehensive AI User Impact Survey.">
+    <meta property="og:url" content="https://aiguilt.com/research">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="AI Guilt Research - AI User Impact Survey | AI Guilt">
+    <meta name="twitter:description" content="Discover AI Guilt's research on AI's impact, featuring our in-depth AI User Impact Survey.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+        }
+        .main-content {
+            min-height: calc(100vh - 56px - 100px);
+            padding: 40px 0;
+        }
+        .research-section {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .footer {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 20px 0;
+            border-top: 1px solid #333;
+        }
+        h1, h2, h3 {
+            color: #4267B2;
+        }
+        .btn-primary {
+            background-color: #4267B2;
+            border-color: #4267B2;
+        }
+        .btn-primary:hover {
+            background-color: #365899;
+            border-color: #365899;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">AI Guilt</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/research.html">Research</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="research-section">
+                <h1 class="mb-4">AI Guilt Research</h1>
+                <h2>AI User Impact Survey</h2>
+                <p>Our AI User Impact Survey is a comprehensive study designed to explore the multifaceted effects of artificial intelligence on various aspects of human life. This survey covers a wide range of topics, including:</p>
+                <ul>
+                    <li>AI's impact on daily life</li>
+                    <li>The influence of AI on work and productivity</li>
+                    <li>AI's role in creativity and innovation</li>
+                    <li>The effects of AI on personal relationships</li>
+                    <li>AI's impact on personal well-being and mental health</li>
+                </ul>
+                <p>The questions in our survey are carefully crafted to capture both positive and negative effects of AI technologies, allowing for a nuanced and balanced assessment of users' experiences. By participating in this survey, you contribute to a deeper understanding of how AI is shaping our world and help inform future ethical guidelines and best practices for AI development and implementation.</p>
+                <a href="#" class="btn btn-primary mt-3">Participate in the Survey</a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about.html" class="text-white">About Us</a></li>
+                        <li><a href="/terms.html" class="text-white">Terms of Service</a></li>
+                        <li><a href="/privacy.html" class="text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Contact Us</h5>
+                    <p>Email: <a href="mailto:info@aiguilt.com" class="text-white">info@aiguilt.com</a></p>
+                    <p>Phone: <a href="tel:5624448463" class="text-white">562-444-8463</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        console.log('Research page loaded');
+    });
+    </script>
+</body>
+</html>

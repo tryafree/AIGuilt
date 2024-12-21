@@ -1,0 +1,264 @@
+<html><head><base href="https://aiguilt.com/"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>AI Guilt - Exploring Ethical Implications of Artificial Intelligence</title>
+<meta name="description" content="Explore the psychological and ethical implications of AI use. Join discussions on AI guilt, job loss concerns, and the latest research in the field.">
+<meta name="keywords" content="AI guilt, artificial intelligence ethics, job loss due to AI, professional identity, AI research">
+<link rel="canonical" href="https://aiguilt.com/">
+<meta property="og:title" content="AI Guilt - Exploring Ethical Implications of Artificial Intelligence">
+<meta property="og:description" content="Join the conversation on AI guilt, job loss concerns, and ethical implications of AI use. Stay updated with the latest research and community insights.">
+<meta property="og:url" content="https://aiguilt.com/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Guilt - Exploring Ethical Implications of Artificial Intelligence">
+<meta name="twitter:description" content="Explore AI guilt, job loss concerns, and ethical dilemmas. Join our community for the latest research and discussions on the impact of AI.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.js"></script>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #000000;
+        color: #ffffff;
+    }
+    .navbar {
+        background-color: #1a1a1a;
+        border-bottom: 1px solid #333;
+    }
+    .navbar-brand, .nav-link {
+        color: #ffffff !important;
+    }
+    .feed-item {
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 15px;
+        border: 1px solid #333;
+    }
+    .blog-post {
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #333;
+    }
+    .blog-post h4 {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    .blog-post p {
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+    .blog-post img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+    .btn-primary {
+        background-color: #4267B2;
+        border-color: #4267B2;
+    }
+    .btn-primary:hover {
+        background-color: #365899;
+        border-color: #365899;
+    }
+    .footer {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        padding: 20px 0;
+        border-top: 1px solid #333;
+    }
+</style>
+</head><body>
+<div id="app">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">AI Guilt</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resources">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/guidelines">Community Guidelines</a>
+                    </li>
+                    <li class="nav-item" v-if="!isLoggedIn">
+                        <a class="nav-link" href="/signup">Sign Up</a>
+                    </li>
+                    <li class="nav-item" v-if="!isLoggedIn">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item" v-if="isLoggedIn">
+                        <a class="nav-link" href="/profile">Profile</a>
+                    </li>
+                    <li class="nav-item" v-if="isLoggedIn">
+                        <a class="nav-link" href="#" @click="logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Left column: Member feed -->
+            <div class="col-md-6">
+                <h2>Community Feed</h2>
+                <div v-if="isLoggedIn" class="mb-4">
+                    <textarea class="form-control bg-dark text-white" v-model="newPost" rows="3" placeholder="Share your AI guilt experience..."></textarea>
+                    <button class="btn btn-primary mt-2" @click="submitPost">Post</button>
+                </div>
+                <div v-for="post in posts" :key="post.id" class="feed-item">
+                    <h5>{{ post.author }}</h5>
+                    <p>{{ post.content }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">{{ post.timestamp }}</small>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" @click="upvotePost(post)">
+                                Upvote ({{ post.upvotes }})
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" @click="replyToPost(post)">Reply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right column: Blog posts -->
+            <div class="col-md-6">
+                <h2>Latest AI Guilt Research</h2>
+                <div v-for="blog in blogPosts" :key="blog.id" class="blog-post">
+                    <img :src="blog.image" :alt="blog.title">
+                    <h4>{{ blog.title }}</h4>
+                    <p>{{ blog.excerpt }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">By {{ blog.author }} on {{ blog.date }}</small>
+                        <a :href="'/blog/' + blog.id" class="btn btn-primary btn-sm">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Newsletter Signup -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card bg-dark text-white">
+                    <div class="card-body">
+                        <h3 class="card-title">Stay Updated on AI Guilt Research</h3>
+                        <p class="card-text">Sign up for our newsletter to receive the latest insights and community highlights.</p>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email for newsletter" aria-describedby="button-addon2">
+                            <button class="btn btn-primary" type="button" id="button-addon2">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Contact Us</h5>
+                    <p>Email: <a href="mailto:info@aiguilt.com" class="text-white">info@aiguilt.com</a></p>
+                    <p>Phone: <a href="tel:5624448463" class="text-white">562-444-8463</a></p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="/about" class="text-white">About Us</a></li>
+                        <li><a href="/terms" class="text-white">Terms of Service</a></li>
+                        <li><a href="/privacy" class="text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script>
+const app = Vue.createApp({
+    data() {
+        return {
+            isLoggedIn: false,
+            newPost: '',
+            posts: [
+                { id: 1, author: 'John Doe', content: 'I feel conflicted about using AI for creative writing. It\'s efficient, but am I losing my own voice?', timestamp: '2 hours ago', upvotes: 5 },
+                { id: 2, author: 'Jane Smith', content: 'AI helped me diagnose a health issue, but I\'m worried about data privacy and the potential for misdiagnosis.', timestamp: '4 hours ago', upvotes: 3 },
+            ],
+            blogPosts: [
+                { 
+                    id: 1, 
+                    title: 'The Impact of Threats to Professional Identity on Guilt in the Use of AI Tools', 
+                    excerpt: 'New TREO paper at ECIS 2024 explores AI tools\' effect on professional identity and guilt.',
+                    author: 'Jennifer L. Ziegelmayer, Tabitha L. James', 
+                    date: 'June 9, 2024',
+                    image: 'https://aiguilt.com/images/professional-identity.svg'
+                },
+                { 
+                    id: 2, 
+                    title: 'AI and Job Loss: Navigating the Changing Workforce', 
+                    excerpt: 'Examining the real impact of AI on employment and strategies for adaptation.',
+                    author: 'Dr. Emily Chen', 
+                    date: 'June 15, 2023',
+                    image: 'https://aiguilt.com/images/ai-job-loss.svg'
+                },
+                { 
+                    id: 3, 
+                    title: 'Ethical Implications of AI in Healthcare Decision-Making', 
+                    excerpt: 'Exploring the moral dilemmas faced by healthcare professionals using AI-assisted diagnostics.',
+                    author: 'Prof. Michael Thompson', 
+                    date: 'June 20, 2023',
+                    image: 'https://aiguilt.com/images/ai-healthcare.svg'
+                },
+                { 
+                    id: 4, 
+                    title: 'AI in Education: Balancing Efficiency and Human Touch', 
+                    excerpt: 'Investigating educator guilt and the role of AI in personalized learning.',
+                    author: 'Dr. Sarah Goldstein', 
+                    date: 'June 25, 2023',
+                    image: 'https://aiguilt.com/images/ai-education.svg'
+                }
+            ]
+        }
+    },
+    methods: {
+        submitPost() {
+            if (this.newPost.trim()) {
+                this.posts.unshift({
+                    id: this.posts.length + 1,
+                    author: 'Current User',
+                    content: this.newPost,
+                    timestamp: 'Just now',
+                    upvotes: 0
+                });
+                this.newPost = '';
+            }
+        },
+        upvotePost(post) {
+            post.upvotes++;
+        },
+        replyToPost(post) {
+            // Implement reply functionality
+            console.log('Reply to post:', post.id);
+        },
+        logout() {
+            this.isLoggedIn = false;
+            // Add actual logout logic here
+        }
+    },
+    mounted() {
+        // Simulating a logged-in user for demonstration
+        this.isLoggedIn = true;
+    }
+}).mount('#app');
+</script>
+</body></html>

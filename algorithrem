@@ -1,0 +1,80 @@
+def guilt_algorithm(historical_data, prediction_horizon, confidence_threshold):
+    """
+    Implementation of the GUILT predictive framework
+    
+    Args:
+        historical_data: DataFrame of temporal events and features
+        prediction_horizon: Time steps to predict into future
+        confidence_threshold: Minimum required prediction confidence
+        
+    Returns:
+        tuple: (predictions, confidences, transformation_impacts)
+    """
+    # Calculate transformation impacts
+    impacts = calculate_transformation_impacts(historical_data)
+    
+    # Identify significant patterns
+    patterns = extract_transformation_patterns(
+        historical_data, 
+        impacts,
+        min_support=0.05
+    )
+    
+    # Build probabilistic model
+    model = TransformativePredictor(
+        patterns=patterns,
+        horizon=prediction_horizon,
+        confidence_threshold=confidence_threshold
+    )
+    
+    # Generate predictions with confidence scores
+    predictions = []
+    confidences = []
+    
+    for timestep in prediction_range:
+        # Calculate state probability distribution
+        P_state = model.predict_state_distribution(timestep)
+        
+        # Apply transformation impact weighting
+        weighted_distribution = apply_impact_weights(P_state, impacts)
+        
+        # Extract most likely prediction
+        prediction = argmax(weighted_distribution)
+        confidence = calculate_prediction_confidence(weighted_distribution)
+        
+        predictions.append(prediction)
+        confidences.append(confidence)
+    
+    return predictions, confidences, impacts
+
+def calculate_transformation_impacts(data):
+    """Calculate transformation impact scores τ for each event"""
+    impacts = []
+    
+    for t in range(1, len(data)):
+        # Calculate state gradient
+        state_gradient = compute_state_gradient(data, t)
+        
+        # Calculate outcome difference
+        outcome_delta = compute_outcome_delta(data, t)
+        
+        # Apply kernel function
+        impact = norm(state_gradient) * kernel_function(outcome_delta)
+        impacts.append(impact)
+    
+    return normalize_impacts(impacts)
+
+def extract_transformation_patterns(data, impacts, min_support):
+    """Identify significant patterns in transformative events"""
+    patterns = []
+    
+    # Find high-impact events
+    high_impact_indices = np.where(impacts > np.percentile(impacts, 90))[0]
+    
+    # Extract temporal patterns around high-impact events
+    for idx in high_impact_indices:
+        pattern = extract_temporal_window(data, idx)
+        if calculate_pattern_support(pattern, data) >= min_support:
+            patterns.append(pattern)
+    
+    return cluster_similar_patterns(patterns)

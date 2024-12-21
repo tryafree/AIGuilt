@@ -1,0 +1,38 @@
+<div class="main-content">
+    <div class="container">
+        <div class="landing-section">
+            <h2>AI Guilt Membership</h2>
+            <form id="membershipForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('membershipForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Here you would typically send the form data to your server
+    // For this example, we'll simulate email verification
+    const email = document.getElementById('email').value;
+    
+    // Simulate sending verification email
+    alert(`A verification email has been sent to ${email}. Please check your inbox.`);
+    
+    // Redirect to a verification page (you'll need to create this)
+    window.location.href = '/verify-email.html';
+});
+</script>

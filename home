@@ -1,0 +1,272 @@
+c<html><head><base href="https://aiguilt.com/"><title>AI Guilt - Exploring Ethical Implications of AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: #cccccc;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.logo-container {
+    perspective: 1000px;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #cccccc;
+    opacity: 0;
+    transform: translateZ(-1000px);
+    animation: logoAnimation 3s forwards;
+}
+
+@keyframes logoAnimation {
+    0% {
+        opacity: 0;
+        transform: translateZ(-1000px) scale(0.1);
+        color: #333333;
+    }
+    100% {
+        opacity: 1;
+        transform: translateZ(0) scale(1);
+        color: #cccccc;
+    }
+}
+
+nav ul {
+    list-style-type: none;
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav ul li a {
+    color: #cccccc;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ffffff;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    padding: 6rem 2rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.column {
+    width: 30%;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+}
+
+.column:hover {
+    box-shadow: 0 0 15px rgba(204, 204, 204, 0.1);
+}
+
+h1, h2 {
+    color: #ffffff;
+}
+
+p {
+    line-height: 1.6;
+}
+
+.community-feed, .ai-headlines, .podcast-episodes {
+    height: auto;
+}
+
+.ai-headline {
+    margin-bottom: 1rem;
+}
+
+.ai-headline img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.ai-headline h3 {
+    margin-top: 0.5rem;
+}
+
+.ai-headline a {
+    color: #cccccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.ai-headline a:hover {
+    color: #ffffff;
+}
+
+.podcast-episode {
+    margin-bottom: 1rem;
+}
+
+.podcast-episode a {
+    color: #cccccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.podcast-episode a:hover {
+    color: #ffffff;
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #cccccc;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+footer a {
+    color: #cccccc;
+    text-decoration: none;
+    margin-left: 1rem;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #ffffff;
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo-container">
+        <div class="logo">AI Guilt</div>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="https://aiguilt.com/ai-guilt-defined">AI Guilt Defined</a></li>
+            <li><a href="https://aiguilt.com/research">Research</a></li>
+            <li><a href="https://aiguilt.com/join-community">Join Community</a></li>
+            <li><a href="https://aiguilt.com/resources">Resources</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="content">
+    <div class="column community-feed">
+        <h2>Community Feed</h2>
+        <!-- Community feed content would go here -->
+        <p>This is where the community feed content would be displayed. It could include user posts, comments, and discussions about AI guilt and related topics.</p>
+        <p>The feed could be updated in real-time to show the most recent and relevant content from the AI Guilt community.</p>
+    </div>
+    
+    <div class="column ai-headlines">
+        <h2>AI Headlines</h2>
+        <div class="ai-headline">
+            <img src="headline1.jpg" alt="AI assisting student with homework" width="300" height="200">
+            <h3><a href="https://aiguilt.com/headlines/ai-in-education">AI in Education: Blessing or Curse?</a></h3>
+        </div>
+        <div class="ai-headline">
+            <img src="headline2.jpg" alt="Artist working alongside AI" width="300" height="200">
+            <h3><a href="https://aiguilt.com/headlines/ai-in-creative-fields">The Creative Conundrum: AI's Role in Art</a></h3>
+        </div>
+        <div class="ai-headline">
+            <img src="headline3.jpg" alt="AI and human hands reaching towards each other" width="300" height="200">
+            <h3><a href="https://aiguilt.com/headlines/ai-ethics">The Ethical Dilemma: Navigating AI's Moral Landscape</a></h3>
+        </div>
+    </div>
+    
+    <div class="column podcast-episodes">
+        <h2>Podcast Episodes</h2>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/weight-of-ai-assistance">The Weight of AI Assistance: Unpacking Student Guilt</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/imposter-syndrome-2-0">Imposter Syndrome 2.0: When AI Makes You Feel Inadequate</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/authenticity-crisis">The Authenticity Crisis: AI Guilt in Creative Fields</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/confessions-of-an-ai-user">Confessions of an AI User: Stories of Guilt and Redemption</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/ai-guilt-in-academia">AI Guilt in Academia: Redefining Intellectual Honesty</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/psychological-toll-of-ai-dependence">The Psychological Toll of AI Dependence</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/ai-guilt-in-workplace">AI Guilt in the Workplace: Navigating Ethical Use of AI Tools</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/generational-divide">A Generational Divide: AI Guilt Across Age Groups</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/ai-guilt-and-self-worth">AI Guilt and Self-Worth: When AI Makes You Feel Inadequate</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/ethics-of-ai-assistance">Ethics of AI Assistance: When Does Help Become Cheating?</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/ai-guilt-in-healthcare">AI Guilt in Healthcare: Balancing Efficiency and the Human Touch</a></h3>
+        </div>
+        <div class="podcast-episode">
+            <h3><a href="https://aiguilt.com/podcasts/illusion-of-originality">The Illusion of Originality: AI Guilt in Content Creation</a></h3>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div>Long Beach, California, USA</div>
+    <div>info@aiguilt.com</div>
+    <div>562-444-8463</div>
+    <div>
+        <a href="https://aiguilt.com/privacy-policy">Privacy Policy</a>
+        <a href="https://aiguilt.com/terms">Terms of Service</a>
+    </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    const logo = document.querySelector('.logo');
+    logo.style.opacity = '0';
+    logo.style.transform = 'translateZ(-1000px) scale(0.1)';
+    logo.style.color = '#333333';
+
+    setTimeout(() => {
+        logo.style.transition = 'opacity 3s, transform 3s, color 3s';
+        logo.style.opacity = '1';
+        logo.style.transform = 'translateZ(0) scale(1)';
+        logo.style.color = '#cccccc';
+    }, 100);
+});
+</script>
+
+</body></html>:\Users\User\Downloads\CvL8uBU33I4lYggw3.html
+
+{
+    "liveServer.settings.root": "/",
+    "liveServer.settings.file": "home.html"
+}

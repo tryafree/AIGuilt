@@ -1,0 +1,1063 @@
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Member Profile | AI Guilt</title>
+<meta name="description" content="Manage your AI Guilt profile, track your contributions, and connect with other members exploring the ethical dimensions of AI use.">
+<meta name="keywords" content="AI Guilt, member profile, artificial intelligence ethics, community">
+<link rel="canonical" href="profile.html">
+<meta property="og:title" content="Member Profile | AI Guilt">
+<meta property="og:description" content="Manage your AI Guilt profile, track your contributions, and connect with other members exploring the ethical dimensions of AI use.">
+<meta property="og:url" content="profile.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Member Profile | AI Guilt">
+<meta name="twitter:description" content="Manage your AI Guilt profile, track your contributions, and connect with other members exploring the ethical dimensions of AI use.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #000000;
+        color: #ffffff;
+        line-height: 1.6;
+    }
+    .navbar {
+        background-color: #1a1a1a;
+        border-bottom: 1px solid #333;
+    }
+    .navbar-brand, .nav-link {
+        color: #ffffff !important;
+    }
+    .main-content {
+        min-height: calc(100vh - 56px - 100px);
+        padding: 40px 0;
+    }
+    .profile-section {
+        background-color: #1a1a1a;
+        border-radius: 8px;
+        padding: 30px;
+        margin-bottom: 30px;
+    }
+    .footer {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        padding: 20px 0;
+        border-top: 1px solid #333;
+    }
+    h1, h2, h3 {
+        color: #4267B2;
+    }
+    .btn-primary {
+        background-color: #4267B2;
+        border-color: #4267B2;
+    }
+    .btn-primary:hover {
+        background-color: #365899;
+        border-color: #365899;
+    }
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #4267B2;
+    }
+    .badge {
+        font-size: 0.8em;
+        margin-right: 5px;
+    }
+    .activity-item {
+        background-color: #2a2a2a;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    #aiGuiltChart {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    /* Profile completion progress bar */
+    .profile-completion {
+        background: #252525;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .profile-completion .progress {
+        height: 10px;
+        background-color: #333;
+    }
+    .profile-completion .progress-bar {
+        transition: width 0.5s ease-in-out;
+    }
+    /* Cropper modal styles */
+    .cropper-container {
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    .preview-container {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin: 10px auto;
+    }
+    .privacy-badge {
+        font-size: 0.8em;
+        padding: 2px 8px;
+        border-radius: 12px;
+        margin-left: 8px;
+        background: #333;
+    }
+    .private-content {
+        filter: blur(4px);
+        pointer-events: none;
+    }
+    .private-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+    }
+    .stat-box {
+        border: 1px solid #333;
+        transition: all 0.3s ease;
+    }
+    .stat-box:hover {
+        background-color: #2a2a2a !important;
+        transform: translateY(-2px);
+    }
+    .badge-item {
+        border: 1px solid #333;
+        transition: all 0.3s ease;
+        cursor: help;
+    }
+    .badge-item:hover {
+        background-color: #2a2a2a !important;
+        transform: translateY(-2px);
+    }
+    .activity-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #2a2a2a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .stats-details .stat-item {
+        padding: 15px;
+        background: #2a2a2a;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+    .stats-details .stat-item:hover {
+        transform: translateY(-2px);
+        background: #333;
+    }
+    .stats-details h6 {
+        color: #999;
+        margin-bottom: 5px;
+    }
+    .stats-details .h3 {
+        margin: 0;
+        color: #4267B2;
+    }
+    .create-post-form {
+        transition: all 0.3s ease;
+    }
+    .post-item {
+        transition: all 0.3s ease;
+    }
+    .post-item:hover {
+        transform: translateY(-2px);
+    }
+    .form-range::-webkit-slider-thumb {
+        background: #4267B2;
+    }
+    .form-range::-webkit-slider-runnable-track {
+        background: #333;
+    }
+    .dropdown-item:hover {
+        background-color: #2a2a2a;
+    }
+    .alert-danger {
+        background-color: #2c1a1a;
+        border-color: #842029;
+        color: #ea868f;
+    }
+    .modal .btn-primary {
+        width: 100%;
+        padding: 10px;
+        font-weight: 500;
+        margin-top: 10px;
+    }
+    .modal .btn-primary:disabled {
+        background-color: #2a4a80;
+        border-color: #2a4a80;
+    }
+</style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <!-- Loading State -->
+        <div v-if="loading" class="position-fixed w-100 h-100 d-flex justify-content-center align-items-center" style="background: rgba(0,0,0,0.8); z-index: 1000;">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Not Authenticated State -->
+        <div v-if="!loading && !user" class="container mt-5">
+            <div class="alert alert-warning">
+                Please <a href="index.html" class="alert-link">login</a> to view your profile.
+            </div>
+        </div>
+
+        <!-- Authenticated State -->
+        <div v-if="!loading && user">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container">
+                    <a class="navbar-brand" href="index.html">AI Guilt</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="index.html">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="about.html">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="resources.html">Resources</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="profile.html">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <button @click="handleLogout" class="nav-link btn btn-link">Logout</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="main-content">
+                <div class="container">
+                    <div class="profile-section">
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <img :src="userProfile.photoURL || 'https://via.placeholder.com/150'" alt="Profile Picture" class="profile-picture mb-3">
+                                <h3>{{ userProfile.displayName || 'Anonymous User' }}</h3>
+                                <p class="text-muted">{{ userProfile.bio || 'No bio yet' }}</p>
+                                <button class="btn btn-primary mb-3" @click="showEditModal">
+                                    Edit Profile
+                                </button>
+                                
+                                <!-- User Stats -->
+                                <div class="user-stats mt-4">
+                                    <div class="row g-2">
+                                        <div class="col-4">
+                                            <div class="stat-box p-2 rounded bg-dark">
+                                                <h5 class="mb-0">{{ userProfile.posts || 0 }}</h5>
+                                                <small class="text-muted">Posts</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="stat-box p-2 rounded bg-dark">
+                                                <h5 class="mb-0">{{ userProfile.contributions || 0 }}</h5>
+                                                <small class="text-muted">Contributions</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="stat-box p-2 rounded bg-dark">
+                                                <h5 class="mb-0">{{ userProfile.reputation || 0 }}</h5>
+                                                <small class="text-muted">Reputation</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <!-- Profile Completion -->
+                                <div class="profile-completion mb-4">
+                                    <h4>Profile Completion</h4>
+                                    <div class="progress mb-3">
+                                        <div class="progress-bar bg-success" :style="{ width: profileCompletionPercentage + '%' }" 
+                                             role="progressbar" :aria-valuenow="profileCompletionPercentage" aria-valuemin="0" 
+                                             aria-valuemax="100">
+                                            {{ profileCompletionPercentage }}%
+                                        </div>
+                                    </div>
+                                    <div class="mt-2" v-if="incompleteProfileItems.length > 0">
+                                        <h6 class="text-muted">Complete these items to improve your profile:</h6>
+                                        <ul class="list-unstyled">
+                                            <li v-for="item in incompleteProfileItems" :key="item.field" class="text-warning">
+                                                <i class="fas fa-exclamation-circle me-2"></i>{{ item.label }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Badges Section -->
+                                <div class="badges-section mb-4">
+                                    <h4>Achievements</h4>
+                                    <div v-if="userBadges.length === 0" class="text-muted">
+                                        No badges earned yet. Start contributing to earn badges!
+                                    </div>
+                                    <div v-else class="d-flex flex-wrap gap-2">
+                                        <div v-for="badge in userBadges" :key="badge.id" 
+                                             class="badge-item p-2 bg-dark rounded"
+                                             :title="badge.description">
+                                            <i :class="badge.icon"></i>
+                                            <span class="ms-2">{{ badge.name }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- AI Usage Stats -->
+                                <div class="ai-stats-section mb-4">
+                                    <h4>AI Usage Statistics</h4>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <canvas id="aiUsageChart"></canvas>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="stats-details">
+                                                <div class="stat-item mb-3">
+                                                    <h6>Total Interactions</h6>
+                                                    <p class="h3">{{ aiStats.totalInteractions }}</p>
+                                                </div>
+                                                <div class="stat-item mb-3">
+                                                    <h6>Average Guilt Score</h6>
+                                                    <p class="h3">{{ aiStats.averageGuiltScore.toFixed(1) }}/10</p>
+                                                </div>
+                                                <div class="stat-item">
+                                                    <h6>Most Common Use</h6>
+                                                    <p class="h3">{{ aiStats.mostCommonUse || 'N/A' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feed Section -->
+                    <div class="create-post mb-4">
+                        <div class="card bg-dark border-secondary">
+                            <div class="card-body">
+                                <form @submit.prevent="createPost">
+                                    <textarea 
+                                        class="form-control bg-dark text-white mb-3" 
+                                        v-model="newPost.content"
+                                        placeholder="Share your thoughts about AI usage..."
+                                        rows="3"
+                                        maxlength="500"
+                                        required></textarea>
+                                    <div class="d-flex gap-3 align-items-center">
+                                        <select 
+                                            class="form-select bg-dark text-white w-auto" 
+                                            v-model="newPost.category"
+                                            required>
+                                            <option value="">Select category</option>
+                                            <option value="ai_usage">AI Usage</option>
+                                            <option value="ethics">Ethics</option>
+                                            <option value="reflection">Reflection</option>
+                                            <option value="question">Question</option>
+                                        </select>
+                                        <div class="ms-auto">
+                                            <span class="text-muted me-3">{{ 500 - (newPost.content?.length || 0) }}</span>
+                                            <button 
+                                                type="submit" 
+                                                class="btn btn-primary"
+                                                :disabled="!newPost.content.trim() || !newPost.category">
+                                                Post
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                        <!-- Create Post Form -->
+                        <div v-if="showPostForm" class="create-post-form mb-4">
+                            <div class="card bg-dark border-secondary">
+                                <div class="card-body">
+                                    <form @submit.prevent="submitPost">
+                                        <div class="mb-3">
+                                            <label class="form-label">What's on your mind?</label>
+                                            <textarea v-model="newPost.content" 
+                                                    class="form-control bg-dark text-white" 
+                                                    rows="3" 
+                                                    placeholder="Share your thoughts..."
+                                                    maxlength="500"
+                                                    required></textarea>
+                                            <small class="text-muted">{{ 500 - (newPost.content?.length || 0) }} characters remaining</small>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Category</label>
+                                            <select v-model="newPost.category" class="form-select bg-dark text-white" required>
+                                                <option value="">Select a category</option>
+                                                <option value="coding">Coding</option>
+                                                <option value="writing">Writing</option>
+                                                <option value="research">Research</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="d-grid gap-2">
+                                            <button type="submit" class="btn btn-primary" :disabled="isPostingDisabled">
+                                                Post
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" @click="cancelPost">
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feed Posts -->
+                        <div v-if="userPosts.length === 0 && !showPostForm" class="text-center text-muted py-4">
+                            <i class="fas fa-comment-dots fa-3x mb-3"></i>
+                            <p>Share your thoughts!</p>
+                            <button class="btn btn-primary btn-sm" @click="showCreatePostModal">
+                                Create Your First Post
+                            </button>
+                        </div>
+
+                        <div v-else class="posts-feed">
+                            <div v-for="post in userPosts" :key="post.id" class="post-item card bg-dark border-secondary mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <img :src="userProfile.photoURL || 'https://via.placeholder.com/40'" 
+                                                 alt="Profile" 
+                                                 class="rounded-circle me-2" 
+                                                 style="width: 40px; height: 40px; object-fit: cover;">
+                                            <div>
+                                                <h6 class="mb-0">{{ userProfile.displayName }}</h6>
+                                                <small class="text-muted">{{ formatDate(post.timestamp) }}</small>
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn btn-link text-white" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu dropdown-menu-end bg-dark">
+                                                <li><button class="dropdown-item text-white" @click="editPost(post)">Edit</button></li>
+                                                <li><button class="dropdown-item text-danger" @click="deletePost(post)">Delete</button></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <p class="card-text">{{ post.content }}</p>
+                                    <div class="d-flex justify-content-end">
+                                        <span class="badge bg-secondary">{{ post.category }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Section -->
+                    <div class="profile-section">
+                        <h4>Recent Activity</h4>
+                        <div v-if="userActivities.length === 0" class="text-muted">
+                            No recent activity to show.
+                        </div>
+                        <div v-else class="activity-feed">
+                            <div v-for="activity in userActivities" :key="activity.id" class="activity-item">
+                                <div class="d-flex align-items-center">
+                                    <div class="activity-icon me-3">
+                                        <i :class="activity.icon + ' text-primary'"></i>
+                                    </div>
+                                    <div class="activity-content flex-grow-1">
+                                        <p class="mb-1">{{ activity.description }}</p>
+                                        <small class="text-muted">{{ formatDate(activity.timestamp) }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="userActivities.length > 0" class="text-center mt-3">
+                            <button class="btn btn-outline-primary btn-sm">View All Activity</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title">Edit Profile</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form @submit.prevent="saveProfile">
+                        <!-- Profile Picture -->
+                        <div class="mb-4">
+                            <label class="form-label">Profile Picture</label>
+                            <div class="d-flex align-items-center gap-3">
+                                <img :src="selectedPhotoURL || userProfile.photoURL || 'https://via.placeholder.com/150'" 
+                                     alt="Profile Preview" 
+                                     class="rounded-circle"
+                                     style="width: 100px; height: 100px; object-fit: cover;">
+                                <div class="flex-grow-1">
+                                    <input type="file" 
+                                           class="form-control bg-dark text-white" 
+                                           accept="image/*"
+                                           @change="handleFileSelect"
+                                           ref="fileInput">
+                                    <small class="text-muted d-block mt-1">Max size: 5MB. Supported: JPG, PNG</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Display Name -->
+                        <div class="mb-3">
+                            <label class="form-label">Display Name</label>
+                            <input type="text" 
+                                   class="form-control bg-dark text-white" 
+                                   v-model="editDisplayName" 
+                                   name="displayName"
+                                   required
+                                   minlength="3"
+                                   maxlength="50">
+                            <small class="text-muted">3-50 characters</small>
+                        </div>
+                        
+                        <!-- Bio -->
+                        <div class="mb-3">
+                            <label class="form-label">Bio</label>
+                            <textarea class="form-control bg-dark text-white" 
+                                      v-model="editBio" 
+                                      name="bio"
+                                      rows="3" 
+                                      maxlength="500"
+                                      placeholder="Tell us about yourself..."></textarea>
+                            <small class="text-muted">{{ 500 - (editBio?.length || 0) }} characters remaining</small>
+                        </div>
+
+                        <!-- Privacy Settings -->
+                        <div class="mb-3">
+                            <label class="form-label">Privacy Settings</label>
+                            <div class="card bg-dark border-secondary">
+                                <div class="card-body">
+                                    <div class="mb-2">
+                                        <label class="form-label">Email Visibility</label>
+                                        <select class="form-select bg-dark text-white" 
+                                                v-model="privacySettings.email"
+                                                name="privacy_email">
+                                            <option value="private">Private</option>
+                                            <option value="public">Public</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Activity History</label>
+                                        <select class="form-select bg-dark text-white" 
+                                                v-model="privacySettings.activity"
+                                                name="privacy_activity">
+                                            <option value="private">Private</option>
+                                            <option value="friends">Friends Only</option>
+                                            <option value="public">Public</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">AI Guilt Stats</label>
+                                        <select class="form-select bg-dark text-white" 
+                                                v-model="privacySettings.stats"
+                                                name="privacy_stats">
+                                            <option value="private">Private</option>
+                                            <option value="friends">Friends Only</option>
+                                            <option value="public">Public</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" :disabled="saving">
+                                Save Changes
+                            </button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="about.html" class="text-white">About Us</a></li>
+                        <li><a href="terms.html" class="text-white">Terms of Service</a></li>
+                        <li><a href="privacy.html" class="text-white">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h5>Stay Updated</h5>
+                    <p>Join our mailing list for updates on AI guilt insights and community activities.</p>
+                    <form class="mt-3">
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Your email" aria-label="Your email" aria-describedby="button-addon2">
+                            <button class="btn btn-primary" type="button" id="button-addon2">Subscribe</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script type="module">
+        import { 
+            auth, 
+            db, 
+            storage,
+            collection,
+            doc,
+            getDoc,
+            setDoc,
+            updateDoc,
+            deleteDoc,
+            addDoc,
+            query,
+            orderBy,
+            getDocs,
+            increment
+        } from './public/js/firebase-config.js';
+        import { ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
+        import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    user: null,
+                    userProfile: {},
+                    loading: true,
+                    saving: false,
+                    editError: null,
+                    selectedFile: null,
+                    selectedPhotoURL: null,
+                    editDisplayName: '',
+                    editBio: '',
+                    privacySettings: {
+                        email: 'private',
+                        activity: 'public',
+                        stats: 'public'
+                    },
+                    userBadges: [],
+                    userActivities: [],
+                    aiStats: {
+                        totalInteractions: 0,
+                        averageGuiltScore: 0,
+                        mostCommonUse: ''
+                    },
+                    incompleteProfileItems: [],
+                    profileCompletionPercentage: 0,
+                    showPostForm: false,
+                    posting: false,
+                    userPosts: [],
+                    newPost: {
+                        content: '',
+                        category: ''
+                    }
+                }
+            },
+            computed: {
+                isPostingDisabled() {
+                    return !this.newPost.content.trim() || 
+                           !this.newPost.category ||
+                           this.posting;
+                }
+            },
+            methods: {
+                async submitPost() {
+                    if (this.isPostingDisabled) return;
+                    
+                    this.posting = true;
+                    try {
+                        const postData = {
+                            content: this.newPost.content.trim(),
+                            category: this.newPost.category,
+                            userId: this.user.uid,
+                            userDisplayName: this.userProfile.displayName,
+                            userPhotoURL: this.userProfile.photoURL,
+                            timestamp: new Date().toISOString(),
+                            likes: 0,
+                            comments: []
+                        };
+
+                        // Add post to Firestore
+                        const postsRef = collection(db, 'posts');
+                        const docRef = await addDoc(postsRef, postData);
+                        
+                        // Add to user's posts collection
+                        const userPostRef = doc(db, `users/${this.user.uid}/posts/${docRef.id}`);
+                        await setDoc(userPostRef, postData);
+
+                        // Update user's post count in profile
+                        const userRef = doc(db, 'users', this.user.uid);
+                        await updateDoc(userRef, {
+                            posts: increment(1)
+                        });
+
+                        // Add to user's activity
+                        await this.addActivity({
+                            type: 'post',
+                            description: `Created a new post about ${postData.category}`,
+                            timestamp: postData.timestamp,
+                            icon: 'fas fa-pen'
+                        });
+
+                        // Update local state
+                        this.userPosts.unshift({ id: docRef.id, ...postData });
+                        this.userProfile.posts = (this.userProfile.posts || 0) + 1;
+                        this.showPostForm = false;
+                        this.newPost = {
+                            content: '',
+                            category: ''
+                        };
+                    } catch (error) {
+                        console.error('Error creating post:', error);
+                        alert('Failed to create post. Please try again.');
+                    } finally {
+                        this.posting = false;
+                    }
+                },
+                async handleLogout() {
+                    try {
+                        await signOut(auth);
+                        window.location.href = 'login.html';
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                    }
+                },
+
+                showEditModal() {
+                    this.editDisplayName = this.userProfile.displayName || '';
+                    this.editBio = this.userProfile.bio || '';
+                    this.selectedPhotoURL = this.userProfile.photoURL;
+                    this.privacySettings = {
+                        email: this.userProfile.privacy?.email || 'private',
+                        activity: this.userProfile.privacy?.activity || 'public',
+                        stats: this.userProfile.privacy?.stats || 'public'
+                    };
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('editProfileModal'));
+                    modal.show();
+                },
+
+                async handleFileSelect(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    if (!file.type.match('image.*')) {
+                        this.editError = 'Please select an image file (JPG or PNG)';
+                        this.$refs.fileInput.value = '';
+                        return;
+                    }
+
+                    if (file.size > 5 * 1024 * 1024) {
+                        this.editError = 'Image must be smaller than 5MB';
+                        this.$refs.fileInput.value = '';
+                        return;
+                    }
+
+                    this.selectedFile = file;
+                    this.selectedPhotoURL = URL.createObjectURL(file);
+                },
+
+                async uploadProfilePicture() {
+                    if (!this.selectedFile) return this.userProfile.photoURL;
+
+                    try {
+                        const fileExt = this.selectedFile.name.split('.').pop();
+                        const fileName = `profile-pictures/${this.user.uid}-${Date.now()}.${fileExt}`;
+                        const storageRef = ref(storage, fileName);
+
+                        const snapshot = await uploadBytes(storageRef, this.selectedFile);
+                        return await getDownloadURL(snapshot.ref);
+                    } catch (error) {
+                        console.error('Error uploading profile picture:', error);
+                        throw new Error('Failed to upload profile picture');
+                    }
+                },
+
+                async saveProfile(event) {
+                    event.preventDefault();
+                    this.saving = true;
+                    this.editError = null;
+
+                    try {
+                        if (!this.user) throw new Error('User not authenticated');
+                        if (!this.editDisplayName.trim()) throw new Error('Display name is required');
+
+                        let photoURL = this.userProfile.photoURL;
+                        if (this.selectedFile) {
+                            photoURL = await this.uploadProfilePicture();
+                        }
+
+                        const updates = {
+                            displayName: this.editDisplayName.trim(),
+                            bio: this.editBio.trim(),
+                            photoURL: photoURL,
+                            privacy: this.privacySettings,
+                            lastUpdated: new Date().toISOString()
+                        };
+
+                        const userDocRef = doc(db, 'users', this.user.uid);
+                        await setDoc(userDocRef, { ...this.userProfile, ...updates }, { merge: true });
+                        
+                        this.userProfile = { ...this.userProfile, ...updates };
+                        
+                        this.selectedFile = null;
+                        this.selectedPhotoURL = null;
+                        if (this.$refs.fileInput) this.$refs.fileInput.value = '';
+                        
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('editProfileModal'));
+                        if (modal) modal.hide();
+                        
+                        this.calculateProfileCompletion();
+                    } catch (error) {
+                        console.error('Save error:', error);
+                        this.editError = error.message || 'Failed to save profile changes';
+                    } finally {
+                        this.saving = false;
+                    }
+                },
+
+                calculateProfileCompletion() {
+                    const requiredFields = [
+                        { field: 'displayName', label: 'Display Name' },
+                        { field: 'bio', label: 'Bio' },
+                        { field: 'photoURL', label: 'Profile Picture' }
+                    ];
+
+                    this.incompleteProfileItems = requiredFields.filter(item => {
+                        const value = this.userProfile[item.field];
+                        return !value || (typeof value === 'string' && !value.trim());
+                    }).map(item => item.label);
+
+                    const completedFields = requiredFields.length - this.incompleteProfileItems.length;
+                    this.profileCompletionPercentage = Math.round((completedFields / requiredFields.length) * 100);
+                },
+
+                async loadUserProfile() {
+                    if (!this.user) return;
+                    
+                    try {
+                        const userDocRef = doc(db, 'users', this.user.uid);
+                        const userDoc = await getDoc(userDocRef);
+
+                        if (userDoc.exists()) {
+                            this.userProfile = userDoc.data();
+                        } else {
+                            const defaultProfile = {
+                                displayName: this.user.displayName || 'Anonymous User',
+                                email: this.user.email,
+                                photoURL: this.user.photoURL || 'https://via.placeholder.com/150',
+                                bio: '',
+                                privacy: {
+                                    email: 'private',
+                                    activity: 'public',
+                                    stats: 'public'
+                                },
+                                posts: 0,
+                                contributions: 0,
+                                reputation: 0,
+                                createdAt: new Date().toISOString(),
+                                lastUpdated: new Date().toISOString()
+                            };
+                            await setDoc(userDocRef, defaultProfile);
+                            this.userProfile = defaultProfile;
+                        }
+
+                        // Load badges
+                        const badgesRef = doc(db, `users/${this.user.uid}/badges/list`);
+                        const badgesDoc = await getDoc(badgesRef);
+                        this.userBadges = badgesDoc.exists() ? badgesDoc.data().items || [] : [];
+
+                        // Load activities
+                        const activitiesRef = doc(db, `users/${this.user.uid}/activities/list`);
+                        const activitiesDoc = await getDoc(activitiesRef);
+                        this.userActivities = activitiesDoc.exists() ? 
+                            activitiesDoc.data().items.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).slice(0, 10) : [];
+
+                        // Load AI stats
+                        const statsRef = doc(db, `users/${this.user.uid}/stats/ai`);
+                        const statsDoc = await getDoc(statsRef);
+                        if (statsDoc.exists()) {
+                            this.aiStats = statsDoc.data();
+                        }
+
+                        // Initialize charts after data is loaded
+                        this.$nextTick(() => {
+                            this.initializeCharts();
+                        });
+
+                        // Calculate profile completion
+                        this.calculateProfileCompletion();
+
+                        // Load user posts
+                        await this.loadUserPosts();
+                    } catch (error) {
+                        console.error('Error loading profile:', error);
+                    } finally {
+                        this.loading = false;
+                    }
+                },
+
+                initializeCharts() {
+                    const ctx = document.getElementById('aiUsageChart');
+                    if (!ctx) return;
+
+                    if (this.aiUsageChart) {
+                        this.aiUsageChart.destroy();
+                    }
+
+                    this.aiUsageChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Coding', 'Writing', 'Research', 'Other'],
+                            datasets: [{
+                                data: [30, 25, 25, 20],
+                                backgroundColor: [
+                                    '#4267B2',
+                                    '#36A2EB',
+                                    '#FFCE56',
+                                    '#FF6384'
+                                ]
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: {
+                                        color: '#ffffff',
+                                        padding: 10,
+                                        font: {
+                                            size: 12
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                },
+
+                formatDate(timestamp) {
+                    if (!timestamp) return '';
+                    return new Date(timestamp).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                },
+
+                async deletePost(post) {
+                    if (!confirm('Are you sure you want to delete this post?')) return;
+
+                    try {
+                        await deleteDoc(doc(db, 'posts', post.id));
+                        await deleteDoc(doc(db, `users/${this.user.uid}/posts/${post.id}`));
+
+                        const userRef = doc(db, 'users', this.user.uid);
+                        await updateDoc(userRef, {
+                            posts: increment(-1)
+                        });
+
+                        this.userPosts = this.userPosts.filter(p => p.id !== post.id);
+                        this.userProfile.posts = Math.max(0, (this.userProfile.posts || 0) - 1);
+
+                        await this.addActivity({
+                            type: 'post_delete',
+                            description: 'Deleted a post',
+                            timestamp: new Date().toISOString(),
+                            icon: 'fas fa-trash'
+                        });
+                    } catch (error) {
+                        console.error('Error deleting post:', error);
+                        alert('Failed to delete post. Please try again.');
+                    }
+                },
+
+                async addActivity(activity) {
+                    try {
+                        const activitiesRef = doc(db, `users/${this.user.uid}/activities/list`);
+                        const activitiesDoc = await getDoc(activitiesRef);
+                        
+                        let activities = [];
+                        if (activitiesDoc.exists()) {
+                            activities = activitiesDoc.data().items || [];
+                        }
+                        
+                        activities.unshift(activity);
+                        activities = activities.slice(0, 50);
+                        
+                        await setDoc(activitiesRef, { items: activities });
+                        
+                        this.userActivities = activities.slice(0, 10);
+                    } catch (error) {
+                        console.error('Error adding activity:', error);
+                    }
+                },
+
+                async loadUserPosts() {
+                    try {
+                        const postsRef = collection(db, `users/${this.user.uid}/posts`);
+                        const q = query(postsRef, orderBy('timestamp', 'desc'));
+                        const querySnapshot = await getDocs(q);
+                        
+                        this.userPosts = querySnapshot.docs.map(doc => ({
+                            id: doc.id,
+                            ...doc.data()
+                        }));
+                    } catch (error) {
+                        console.error('Error loading posts:', error);
+                    }
+                }
+            },
+            mounted() {
+                onAuthStateChanged(auth, (user) => {
+                    this.user = user;
+                    if (user) {
+                        this.loadUserProfile();
+                    } else {
+                        window.location.href = 'login.html';
+                    }
+                });
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

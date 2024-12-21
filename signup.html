@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - AI Guilt</title>
+    <meta name="description" content="Create your AI Guilt account to join our community of professionals exploring the ethical implications of AI.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        .navbar {
+            background-color: #1a1a1a;
+            border-bottom: 1px solid #333;
+            padding: 1rem 0;
+        }
+        .navbar-brand, .nav-link {
+            color: #ffffff !important;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #4267B2 !important;
+        }
+        .signup-section {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            border: 1px solid #333;
+        }
+        .btn-primary {
+            background-color: #4267B2;
+            border-color: #4267B2;
+            padding: 10px 25px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #365899;
+            border-color: #365899;
+            transform: translateY(-2px);
+        }
+        .form-control {
+            background-color: #2a2a2a;
+            border-color: #333;
+            color: #ffffff;
+            padding: 12px;
+        }
+        .form-control:focus {
+            background-color: #2a2a2a;
+            border-color: #4267B2;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.2rem rgba(66, 103, 178, 0.25);
+        }
+        .footer {
+            background-color: #1a1a1a;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid #333;
+        }
+        .social-links a {
+            color: #ffffff;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+        .social-links a:hover {
+            color: #4267B2;
+        }
+        .form-floating label {
+            color: #999;
+        }
+        .form-floating>.form-control:focus~label,
+        .form-floating>.form-control:not(:placeholder-shown)~label {
+            color: #4267B2;
+        }
+        .password-requirements {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 10px;
+        }
+        .alert {
+            background-color: #2a2a2a;
+            border-color: #333;
+            color: #fff;
+        }
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.2);
+            border-color: #dc3545;
+        }
+        .alert-success {
+            background-color: rgba(40, 167, 69, 0.2);
+            border-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="/">AI Guilt</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/resources">Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/contact">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" @click="showLoginModal">Login</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="signup-section">
+                        <h1 class="text-center mb-4">Create Your Account</h1>
+                        <div v-if="alert" :class="['alert', `alert-${alert.type}`, 'mb-4']">
+                            {{ alert.message }}
+                        </div>
+                        <form @submit.prevent="handleSignup" class="needs-validation" novalidate>
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="email" 
+                                       v-model="email" required
+                                       :class="{ 'is-invalid': errors.email }"
+                                       placeholder="name@example.com">
+                                <label for="email">Email address</label>
+                                <div class="invalid-feedback" v-if="errors.email">
+                                    {{ errors.email }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="password" 
+                                       v-model="password" required
+                                       :class="{ 'is-invalid': errors.password }"
+                                       placeholder="Password">
+                                <label for="password">Password</label>
+                                <div class="invalid-feedback" v-if="errors.password">
+                                    {{ errors.password }}
+                                </div>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="confirmPassword" 
+                                       v-model="confirmPassword" required
+                                       :class="{ 'is-invalid': errors.confirmPassword }"
+                                       placeholder="Confirm Password">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <div class="invalid-feedback" v-if="errors.confirmPassword">
+                                    {{ errors.confirmPassword }}
+                                </div>
+                            </div>
+                            <div class="password-requirements mb-4">
+                                <p class="mb-2">Password must contain:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check-circle text-success me-2"></i> At least 8 characters</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i> One uppercase letter</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i> One lowercase letter</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i> One number</li>
+                                </ul>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100" :disabled="loading">
+                                <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                {{ loading ? 'Creating Account...' : 'Create Account' }}
+                            </button>
+                            <p class="text-center mt-4">
+                                Already have an account? 
+                                <a href="#" @click.prevent="showLoginModal" class="text-primary">Login here</a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div class="modal fade" id="loginModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content bg-dark">
+                    <div class="modal-header border-secondary">
+                        <h5 class="modal-title">Login</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form @submit.prevent="handleLogin">
+                            <div class="mb-3">
+                                <label for="loginEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="loginEmail" v-model="loginData.email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="loginPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="loginPassword" v-model="loginData.password" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Login</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5>About AI Guilt</h5>
+                        <p>A community platform exploring the ethical implications of AI in professional work.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Quick Links</h5>
+                        <ul class="list-unstyled">
+                            <li><a href="/about">About</a></li>
+                            <li><a href="/resources">Resources</a></li>
+                            <li><a href="/contact">Contact</a></li>
+                            <li><a href="/terms">Terms of Service</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h5>Connect With Us</h5>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCP5qMVpN2nssmNtJPQblpg_t4T7txMVjk",
+            authDomain: "ai-guilt.firebaseapp.com",
+            projectId: "ai-guilt",
+            storageBucket: "ai-guilt.firebasestorage.app",
+            messagingSenderId: "394652562837",
+            appId: "1:394652562837:web:1e2cec78d41eca9c89329c"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const { createApp } = Vue;
+        
+        createApp({
+            data() {
+                return {
+                    email: '',
+                    password: '',
+                    confirmPassword: '',
+                    error: null,
+                    loading: false
+                }
+            },
+            methods: {
+                async handleSignup() {
+                    if (this.password !== this.confirmPassword) {
+                        this.error = 'Passwords do not match';
+                        return;
+                    }
+
+                    this.loading = true;
+                    this.error = null;
+
+                    try {
+                        await createUserWithEmailAndPassword(auth, this.email, this.password);
+                        window.location.href = '/profile.html';
+                    } catch (error) {
+                        console.error('Signup error:', error);
+                        switch (error.code) {
+                            case 'auth/email-already-in-use':
+                                this.error = 'This email is already registered.';
+                                break;
+                            case 'auth/invalid-email':
+                                this.error = 'Invalid email address.';
+                                break;
+                            case 'auth/operation-not-allowed':
+                                this.error = 'Email/password accounts are not enabled.';
+                                break;
+                            case 'auth/weak-password':
+                                this.error = 'Password should be at least 6 characters.';
+                                break;
+                            default:
+                                this.error = 'Failed to create account. Please try again.';
+                        }
+                    } finally {
+                        this.loading = false;
+                    }
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

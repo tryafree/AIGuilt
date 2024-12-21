@@ -1,0 +1,88 @@
+import random
+
+class LifePathAnalyzer:
+    def __init__(self):
+        self.questions = {
+            'education': 'What is your highest level of education? ',
+            'career_field': 'What field do you currently work in or plan to work in? ',
+            'goals': 'What are your main goals for the next 5 years? ',
+            'skills': 'What skills are you currently developing? ',
+            'location': 'Where do you plan to live in the next few years? ',
+            'habits': 'What daily habits are you trying to build? '
+        }
+        
+        self.insights = {
+            'education': {
+                'pursuing_degree': 'Your focus on education suggests opportunities for career advancement and specialized roles.',
+                'working': 'Your practical experience could lead to leadership roles or entrepreneurial opportunities.'
+            },
+            'career': {
+                'tech': 'The technology sector continues to grow, suggesting potential for innovation and advancement.',
+                'healthcare': 'Healthcare demands are increasing, indicating stable career prospects and specialization options.',
+                'business': 'Business skills are versatile, opening doors to various industries and leadership roles.'
+            }
+        }
+    
+    def gather_user_input(self):
+        """Collect responses from user"""
+        user_data = {}
+        print("\nWelcome to the Life Path Analysis Tool!")
+        print("Please answer these questions to receive personalized insights.\n")
+        
+        for key, question in self.questions.items():
+            user_data[key] = input(question)
+            print()  # Add spacing between questions
+        return user_data
+    
+    def analyze_responses(self, user_data):
+        """Generate personalized insights based on user responses"""
+        analysis = []
+        
+        # Analyze education and career path
+        analysis.append("\nBased on your responses, here are some potential insights:")
+        
+        # Education-based insights
+        if 'degree' in user_data['education'].lower() or 'university' in user_data['education'].lower():
+            analysis.append(self.insights['education']['pursuing_degree'])
+        else:
+            analysis.append(self.insights['education']['working'])
+            
+        # Career-based insights
+        career = user_data['career_field'].lower()
+        if 'tech' in career or 'software' in career or 'it' in career:
+            analysis.append(self.insights['career']['tech'])
+        elif 'health' in career or 'medical' in career:
+            analysis.append(self.insights['career']['healthcare'])
+        elif 'business' in career or 'management' in career:
+            analysis.append(self.insights['career']['business'])
+            
+        # Goals analysis
+        analysis.append(f"\nYour goals of '{user_data['goals']}' align well with your current direction.")
+        
+        # Skills development
+        analysis.append(f"Your focus on developing {user_data['skills']} could open up new opportunities.")
+        
+        # Location impact
+        analysis.append(f"Your plans to be in {user_data['location']} could influence your opportunities.")
+        
+        # Habits and success
+        analysis.append(f"Your commitment to building habits like {user_data['habits']} suggests positive growth potential.")
+        
+        return "\n".join(analysis)
+    
+    def run_analysis(self):
+        """Main method to run the analysis"""
+        user_data = self.gather_user_input()
+        analysis = self.analyze_responses(user_data)
+        
+        print("\n=== Your Personalized Life Path Analysis ===")
+        print(analysis)
+        print("\nRemember: The future is shaped by your actions and choices.")
+        print("This analysis is meant to provide insights rather than predictions.")
+
+def main():
+    analyzer = LifePathAnalyzer()
+    analyzer.run_analysis()
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Guilt</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="/">AI Guilt</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" @click.prevent="handleLogout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <div class="container">
+                <div v-if="alert" :class="['alert', `alert-${alert.type}`]">
+                    {{ alert.message }}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="profile-card">
+                            <div class="profile-header">
+                                <div class="profile-picture-container">
+                                    <img :src="user.profilePicture" alt="Profile Picture" class="profile-picture">
+                                    <label v-if="editMode" class="profile-picture-edit" title="Change profile picture">
+                                        <input type="file" 
+                                               accept="image/*" 
+                                               @change="handleProfilePictureChange" 
+                                               style="display: none">
+                                        <i class="fas fa-camera"></i>
+                                    </label>
+                                </div>
+                                <h3>{{ user.username }}</h3>
+                                <p class="text-muted">{{ user.email }}</p>
+                                <div class="user-role">{{ user.role }}</div>
+                                <p class="joined-date">Joined {{ joinedDateFormatted }}</p>
+                            </div>
+                            
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ stats.posts }}</div>
+                                    <div class="stat-label">Posts</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ stats.comments }}</div>
+                                    <div class="stat-label">Comments</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">{{ stats.likes }}</div>
+                                    <div class="stat-label">Likes</div>
+                                </div>
+                            </div>
+
+                            <div class="profile-actions">
+                                <button class="btn btn-edit" @click="editMode = true" v-if="!editMode">
+                                    <i class="fas fa-edit me-2"></i> Edit Profile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <!-- New Post Form -->
+                        <div class="profile-card new-post-form">
+                            <h4><i class="fas fa-pen me-2"></i>Create Post</h4>
+                            <form @submit.prevent="createPost">
+                                <div class="mb-3">
+                                    <textarea class="form-control new-post-input"
+                                            v-model="newPost.content"
+                                            placeholder="Share your thoughts on AI ethics..."
+                                            required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <select class="form-control category-select" 
+                                            v-model="newPost.category" 
+                                            required>
+                                        <option value="" disabled>Select a category</option>
+                                        <option value="bias">AI Bias</option>
+                                        <option value="privacy">Privacy</option>
+                                        <option value="safety">Safety</option>
+                                        <option value="transparency">Transparency</option>
+                                        <option value="accountability">Accountability</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Post</button>
+                            </form>
+                        </div>
+
+                        <!-- Feed Section -->
+                        <div class="feed-section">
+                            <div v-for="post in posts" :key="post._id" class="post-card">
+                                <div class="post-header">
+                                    <img :src="post.author.profilePicture" :alt="post.author.username" class="post-author-pic">
+                                    <div>
+                                        <p class="post-author-name">{{ post.author.username }}</p>
+                                        <span class="post-date">{{ formatDate(post.createdAt) }}</span>
+                                        <span class="post-category">{{ post.category }}</span>
+                                    </div>
+                                </div>
+                                <div class="post-content">{{ post.content }}</div>
+                                <div class="post-actions">
+                                    <span class="post-action" :class="{ liked: post.liked }" @click="likePost(post._id)">
+                                        <i class="fas" :class="post.liked ? 'fa-heart' : 'fa-heart'"></i>
+                                        {{ post.likes.length }} likes
+                                    </span>
+                                    <span class="post-action" @click="showComments(post._id)">
+                                        <i class="fas fa-comment"></i>
+                                        {{ post.comments.length }} comments
+                                    </span>
+                                    <span v-if="post.author._id === user._id" 
+                                          class="post-action text-danger" 
+                                          @click="deletePost(post._id)">
+                                        <i class="fas fa-trash"></i>
+                                        Delete
+                                    </span>
+                                </div>
+                                <div v-if="post.showComments" class="comment-section">
+                                    <div v-for="comment in post.comments" :key="comment._id" class="comment">
+                                        <strong>{{ comment.author.username }}:</strong> {{ comment.content }}
+                                    </div>
+                                    <div class="mt-3">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control"
+                                                   v-model="newComment[post._id]"
+                                                   placeholder="Write a comment..."
+                                                   @keyup.enter="addComment(post._id)">
+                                            <button class="btn btn-primary" 
+                                                    @click="addComment(post._id)">
+                                                Comment
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="profile-card" v-if="editMode">
+                            <h4><i class="fas fa-user-edit me-2"></i>Edit Profile</h4>
+                            <form @submit.prevent="updateProfile">
+                                <div class="mb-3">
+                                    <label class="form-label">Username</label>
+                                    <input type="text" class="form-control" v-model="editForm.username">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Bio</label>
+                                    <textarea class="form-control" v-model="editForm.bio" rows="3" 
+                                              placeholder="Tell us about yourself..."></textarea>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="submit" class="btn btn-edit" :disabled="loading">
+                                        <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>
+                                        Save Changes
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" @click="editMode = false">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="profile-card">
+                            <h4><i class="fas fa-lock me-2"></i>Change Password</h4>
+                            <form @submit.prevent="updatePassword">
+                                <div class="mb-3">
+                                    <label class="form-label">Current Password</label>
+                                    <input type="password" class="form-control" v-model="passwordForm.currentPassword">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">New Password</label>
+                                    <input type="password" class="form-control" v-model="passwordForm.newPassword">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Confirm New Password</label>
+                                    <input type="password" class="form-control" v-model="passwordForm.confirmPassword">
+                                </div>
+                                <button type="submit" class="btn btn-edit" :disabled="loading">
+                                    <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>
+                                    Update Password
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="profile-card">
+                            <h4><i class="fas fa-exclamation-triangle me-2"></i>Danger Zone</h4>
+                            <p class="text-danger">Once you delete your account, there is no going back. Please be certain.</p>
+                            <button class="btn btn-danger" @click="confirmDelete">
+                                <i class="fas fa-trash-alt me-2"></i>Delete Account
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
